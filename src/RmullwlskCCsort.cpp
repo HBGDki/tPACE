@@ -3,6 +3,7 @@
 #include <string>       // to read in the kernel name
 #include <vector>       // to use vectors
 #include <algorithm>    // to get the intersect, sort, lower_bound, upper_bound
+#include <gperftools/profiler.h>
 
 // [[Rcpp::depends(RcppEigen)]]
 // [[Rcpp::export]]
@@ -44,7 +45,7 @@ Eigen::MatrixXd RmullwlskCCsort( const Eigen::Map<Eigen::VectorXd> & bw, const s
     Rcpp::Rcout << "Cases with zero-valued windows are not yet implemented" << std::endl;
     return (tPairs);
   } 
-
+ProfilerStart("sort.log");
   // Start the actual smoother here  
   const unsigned int xgridN = xgrid.size();  
   const unsigned int ygridN = ygrid.size();  
@@ -165,7 +166,7 @@ Eigen::MatrixXd RmullwlskCCsort( const Eigen::Map<Eigen::VectorXd> & bw, const s
       }
     }
   }
-
+ProfilerStop();
   if (bwCheck){
      Eigen::MatrixXd checker(1,1); 
      checker(0,0) = 1.; 
