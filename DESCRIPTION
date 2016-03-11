@@ -20,7 +20,7 @@ Imports:
     Matrix,
     pracma, 
     numDeriv
-LinkingTo: Rcpp, RcppEigen 
+LinkingTo: Rcpp, RcppEigen
 Suggests:
     rgl,
     aplpack,

@@ -29,12 +29,28 @@ RCPPvar <- function(X) {
     .Call('fdapace_RCPPvar', PACKAGE = 'fdapace', X)
 }
 
-RmullwlskCC <- function(bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck) {
-    .Call('fdapace_RmullwlskCC', PACKAGE = 'fdapace', bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck)
+RmatLwls2d <- function(bw, kernel_type, yMat, wMat, x1In, x2In, x1Out, x2Out, bwCheck, transp = TRUE) {
+    .Call('fdapace_RmatLwls2d', PACKAGE = 'fdapace', bw, kernel_type, yMat, wMat, x1In, x2In, x1Out, x2Out, bwCheck, transp)
 }
 
 Rmullwlsk <- function(bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck, transp = TRUE) {
     .Call('fdapace_Rmullwlsk', PACKAGE = 'fdapace', bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck, transp)
+}
+
+RmullwlskCC <- function(bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck) {
+    .Call('fdapace_RmullwlskCC', PACKAGE = 'fdapace', bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck)
+}
+
+RmullwlskCCsort <- function(bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck) {
+    .Call('fdapace_RmullwlskCCsort', PACKAGE = 'fdapace', bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck)
+}
+
+RmullwlskCCsort2 <- function(bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck) {
+    .Call('fdapace_RmullwlskCCsort2', PACKAGE = 'fdapace', bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck)
+}
+
+RmullwlskCCtree <- function(kernel_type, tPairs, cxxn, win, xgrid, ygrid) {
+    .Call('fdapace_RmullwlskCCtree', PACKAGE = 'fdapace', kernel_type, tPairs, cxxn, win, xgrid, ygrid)
 }
 
 Rrotatedmullwlsk <- function(bw, kernel_type, tPairs, cxxn, win, xygrid, npoly, bwCheck) {
