@@ -163,16 +163,17 @@ Eigen::MatrixXd RmullwlskCCsort2( const Eigen::Map<Eigen::VectorXd> & bw, const 
         // The solver should stop if the value is NaN. See the HOLE example in gcvlwls2dV2.
         Eigen::VectorXd beta = ldlt_XTWX.solve(X.transpose() * temp.asDiagonal() * ly);  
         mu(i,j)=beta(0); 
-      } else if(meter < 3){
-        // Rcpp::Rcout <<"The meter value is:" << meter << std::endl;  
-        if (bwCheck) {
-            Eigen::MatrixXd checker(1,1);
-            checker(0,0) = 0.;
-            return(checker);
-        } else {
-            Rcpp::stop("No enough points in local window, please increase bandwidth.");
-        }
-      }
+      } 
+      // else if(meter < 3){
+        // // Rcpp::Rcout <<"The meter value is:" << meter << std::endl;  
+        // if (bwCheck) {
+            // Eigen::MatrixXd checker(1,1);
+            // checker(0,0) = 0.;
+            // return(checker);
+        // } else {
+            // Rcpp::stop("No enough points in local window, please increase bandwidth.");
+        // }
+      // }
     }
   }
 

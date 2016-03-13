@@ -2,8 +2,8 @@
 devtools::load_all()
 library(testthat)
 library(microbenchmark)
-library(lineprof)
-Sys.setenv(CPUPROFILE='experiment/proffile')
+# library(lineprof)
+# Sys.setenv(CPUPROFILE='experiment/proffile')
 
 ## time points are unique
 set.seed(1)
@@ -24,8 +24,8 @@ expect_equal(tmp2, tmp4)
 # summary(as.numeric(abs(tmp - tmp3)))
 
 # microbenchmark(tmp <-Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='plain'), times=10L)
-m2 <- microbenchmark(tmp2 <- Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='sort1'), times=1L)
-m4 <- microbenchmark(tmp4 <- Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='sort2'), times=1L)
+m2 <- microbenchmark(tmp2 <- Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='sort1'), times=10L)
+m4 <- microbenchmark(tmp4 <- Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='sort2'), times=10L)
 microbenchmark(tmp3 <- Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='tree'), times=1L)
 expect_equal(tmp2, tmp3)
 

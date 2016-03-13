@@ -1,4 +1,4 @@
 PKG_CPPFLAGS += -I/Users/xiongtao/Dropbox/Research/RPACE/tPACE/experiment/ann_1.1.2/include
-PKG_LIBS += -L/Users/xiongtao/Dropbox/Research/RPACE/tPACE/experiment/ann_1.1.2/lib -lANN -lprofiler
+PKG_LIBS += -L/Users/xiongtao/Dropbox/Research/RPACE/tPACE/experiment/ann_1.1.2/lib -lANN -lprofiler -Wl,-no_pie
 
 

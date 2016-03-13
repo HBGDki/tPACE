@@ -3,7 +3,7 @@
 #include <string>       // to read in the kernel name
 #include <vector>       // to use vectors
 #include <algorithm>    // to get the intersect, sort, lower_bound, upper_bound
-#include <gperftools/profiler.h>
+// #include <gperftools/profiler.h>
 
 // [[Rcpp::depends(RcppEigen)]]
 // [[Rcpp::export]]
@@ -45,7 +45,7 @@ Eigen::MatrixXd RmullwlskCCsort( const Eigen::Map<Eigen::VectorXd> & bw, const s
     Rcpp::Rcout << "Cases with zero-valued windows are not yet implemented" << std::endl;
     return (tPairs);
   } 
-ProfilerStart("sort.log");
+// ProfilerStart("sort.log");
   // Start the actual smoother here  
   const unsigned int xgridN = xgrid.size();  
   const unsigned int ygridN = ygrid.size();  
@@ -58,29 +58,20 @@ ProfilerStart("sort.log");
   Eigen::MatrixXd mu(xgrid.size(), ygrid.size());
   mu.setZero();    
 
-  for (unsigned int j = 0; j != ygridN; ++j) { 
-    for (unsigned int i = 0; i != xgridN; ++i) {  
-      
-      // Window lower upper x, y limits.
-      const double xl = xgrid(i) - bw(0), 
-                   xu = xgrid(i) + bw(0);
+  for (unsigned int i = 0; i != xgridN; ++i) {  
+    // Window lower upper x, y limits.
+    const double xl = xgrid(i) - bw(0), 
+                 xu = xgrid(i) + bw(0);
+    //construct listX as vectors / size is unknown originally
+    unsigned int indl = std::lower_bound(tDat, tDat + n, xl) - tDat,  
+                 indu = std::upper_bound(tDat, tDat + n, xu) - tDat;
+
+    for (unsigned int j = 0; j != ygridN; ++j) { 
                    
       //locating local window (LOL) (bad joke)
       std::vector <unsigned int> indx; 
-      //if the kernel is not Gaussian
-      if ( KernelName != 3) { 
-        //construct listX as vectors / size is unknown originally
-        unsigned int indl = std::lower_bound(tDat, tDat + n, xl) - tDat,  
-                     indu = std::upper_bound(tDat, tDat + n, xu) - tDat;
-                     // Rcpp::Rcout << *(tDat + n - 1) << ' ' << xl << ' ' << xu << ' ' << indl << indu;
-        for (unsigned int y = indl; y != indu; y++){ 
-          if ( std::abs( tPairs(1,y) - ygrid(j) ) <= (bw(1)+ pow(10,-6)) ) { // could be simplified
-            indx.push_back(y);
-          }
-        }
-  
-      } else{ // just get the whole deal
-        for (unsigned int y = 0; y != tPairs.cols(); ++y){
+      for (unsigned int y = indl; y != indu; y++){ 
+        if ( std::abs( tPairs(1,y) - ygrid(j) ) <= (bw(1)+ pow(10,-6)) ) { // could be simplified
           indx.push_back(y);
         }
       }  
@@ -88,40 +79,46 @@ ProfilerStart("sort.log");
       unsigned int indxSize = indx.size();
       Eigen::VectorXd lw(indxSize);  
       Eigen::VectorXd ly(indxSize);
-      Eigen::MatrixXd lx(2,indxSize);
+      // Eigen::MatrixXd lx(2,indxSize);
+      Eigen::MatrixXd X(indxSize ,3);
+      X.col(0).setOnes();    
+      // X.col(1) = lx.row(0);
+      // X.col(2) = lx.row(1);
 
       for (unsigned int u = 0; u !=indxSize; ++u){ 
-        lx.col(u) = tPairs.col(indx[u]); 
+        X(u, 1) = tPairs(0, indx[u])- xgrid(i); 
+        X(u, 2) = tPairs(1, indx[u])- ygrid(i); 
         lw(u) = win(indx[u]); 
         ly(u) = cxxn(indx[u]); 
       }
 
-      // check enough points are in the local window 
-      unsigned int meter=1;  
-      for (unsigned int u =0; u< indxSize; ++u) { 
-        for (unsigned int t = u + 1; t < indxSize; ++t) {
-          if ( (lx(0,u) !=  lx(0,t) ) || (lx(1,u) != lx(1,t) ) ) {
-            meter++;
-          }
-        }
-        if (meter >= 3) { 
-          break; 
-        }
-      }
+      // // check enough points are in the local window 
+      // unsigned int meter=1;  
+      // for (unsigned int u =0; u< indxSize; ++u) { 
+        // for (unsigned int t = u + 1; t < indxSize; ++t) {
+          // if ( (lx(0,u) !=  lx(0,t) ) || (lx(1,u) != lx(1,t) ) ) {
+            // meter++;
+          // }
+        // }
+        // if (meter >= 3) { 
+          // break; 
+        // }
+      // }
    
       //computing weight matrix 
-      if (meter >=  3 && !bwCheck) { 
+      // if (meter >=  3 && !bwCheck) 
+      { 
         Eigen::VectorXd temp(indxSize);
         Eigen::MatrixXd llx(2, indxSize );  
-        llx.row(0) = (lx.row(0).array() - xgrid(i))/bw(0);  
-        llx.row(1) = (lx.row(1).array() - ygrid(j))/bw(1); 
+        llx.row(0) = X.col(1).array() / bw(0);  
+        llx.row(1) = X.col(2).array() / bw(1); 
 
         //define the kernel used 
 
         switch (KernelName){
           case 1: // Epan
             temp=  ((1-llx.row(0).array().pow(2))*(1- llx.row(1).array().pow(2))).array() * 
-                   ((9./16)*lw).transpose().array(); 
+                   (lw).transpose().array(); 
             break;  
           case 2 : // Rect
             temp=(lw.array())*.25 ; 
@@ -146,33 +143,17 @@ ProfilerStart("sort.log");
         } 
 
         // make the design matrix
-        Eigen::MatrixXd X(indxSize ,3);
-        X.setOnes();    
-        X.col(1) = lx.row(0).array() - xgrid(i);
-        X.col(2) = lx.row(1).array() - ygrid(j); 
         Eigen::LDLT<Eigen::MatrixXd> ldlt_XTWX(X.transpose() * temp.asDiagonal() *X);
         // The solver should stop if the value is NaN. See the HOLE example in gcvlwls2dV2.
         Eigen::VectorXd beta = ldlt_XTWX.solve(X.transpose() * temp.asDiagonal() * ly);  
         mu(i,j)=beta(0); 
-      } else if(meter < 3){
-        // Rcpp::Rcout <<"The meter value is:" << meter << std::endl;  
-        if (bwCheck) {
-            Eigen::MatrixXd checker(1,1);
-            checker(0,0) = 0.;
-            return(checker);
-        } else {
-            Rcpp::stop("No enough points in local window, please increase bandwidth.");
-        }
-      }
+      } 
+      // else if(meter < 3){
+        // // Rcpp::Rcout <<"The meter value is:" << meter << std::endl;  
+      // }
     }
   }
-ProfilerStop();
-  if (bwCheck){
-     Eigen::MatrixXd checker(1,1); 
-     checker(0,0) = 1.; 
-     return(checker);
-  } 
-      
+// ProfilerStop();
   return ( mu ); 
 }
 
