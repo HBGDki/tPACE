@@ -17,6 +17,7 @@ Eigen::MatrixXd RmullwlskCCsort( const Eigen::Map<Eigen::VectorXd> & bw, const s
   // ygrid: out2 (in MATLAB code)
   // bwCheck : boolean/ cause the function to simply run the bandwidth check.
 
+  const unsigned int block = std::max(1, (int) std::floor(ygrid.size() / 10));
   const double invSqrt2pi=  1./(sqrt(2.*M_PI));
 
   // Map the kernel name so we can use switches  
@@ -60,21 +61,32 @@ Eigen::MatrixXd RmullwlskCCsort( const Eigen::Map<Eigen::VectorXd> & bw, const s
 
   for (unsigned int i = 0; i != xgridN; ++i) {  
     // Window lower upper x, y limits.
-    const double xl = xgrid(i) - bw(0), 
-                 xu = xgrid(i) + bw(0);
+    const double xl = xgrid(i) - bw(0) - 1e-6, 
+                 xu = xgrid(i) + bw(0) + 1e-6;
     //construct listX as vectors / size is unknown originally
     unsigned int indl = std::lower_bound(tDat, tDat + n, xl) - tDat,  
                  indu = std::upper_bound(tDat, tDat + n, xu) - tDat;
 
-    for (unsigned int j = 0; j != ygridN; ++j) { 
-                   
-      //locating local window (LOL) (bad joke)
-      std::vector <unsigned int> indx; 
-      for (unsigned int y = indl; y != indu; y++){ 
-        if ( std::abs( tPairs(1,y) - ygrid(j) ) <= (bw(1)+ pow(10,-6)) ) { // could be simplified
-          indx.push_back(y);
-        }
-      }  
+    for (unsigned int j = 0; j < ygridN; j = j + block) {
+      std::vector <unsigned int> indxBlock; 
+      double yuBlock = ygrid(std::min(ygridN, j + block) - 1);
+      for (unsigned int y = indl; y < indu; ++y)  
+        if (tPairs(1, y) - ygrid(j)  >= -bw(1) - 1e-6 && 
+            tPairs(1, y) - yuBlock <= bw(1) + 1e-6)
+          indxBlock.push_back(y);
+      // if (j != 0)
+      // Rcpp::Rcout << indxBlock.size();
+
+    for (unsigned int k = 0; k < block && j + k < ygridN; ++k) {
+      std::vector<unsigned int> indx;
+      if (block == 1) {
+        indx = indxBlock;
+      } else {
+        for (std::vector<unsigned int>::iterator it=indxBlock.begin(); 
+            it != indxBlock.end(); ++it)
+          if (fabs(ygrid(j + k) - tPairs(1, *it)) <= bw(1) + 1e-6)
+            indx.push_back(*it);
+      }
 
       unsigned int indxSize = indx.size();
       Eigen::VectorXd lw(indxSize);  
@@ -87,7 +99,7 @@ Eigen::MatrixXd RmullwlskCCsort( const Eigen::Map<Eigen::VectorXd> & bw, const s
 
       for (unsigned int u = 0; u !=indxSize; ++u){ 
         X(u, 1) = tPairs(0, indx[u])- xgrid(i); 
-        X(u, 2) = tPairs(1, indx[u])- ygrid(i); 
+        X(u, 2) = tPairs(1, indx[u])- ygrid(j + k); 
         lw(u) = win(indx[u]); 
         ly(u) = cxxn(indx[u]); 
       }
@@ -146,12 +158,13 @@ Eigen::MatrixXd RmullwlskCCsort( const Eigen::Map<Eigen::VectorXd> & bw, const s
         Eigen::LDLT<Eigen::MatrixXd> ldlt_XTWX(X.transpose() * temp.asDiagonal() *X);
         // The solver should stop if the value is NaN. See the HOLE example in gcvlwls2dV2.
         Eigen::VectorXd beta = ldlt_XTWX.solve(X.transpose() * temp.asDiagonal() * ly);  
-        mu(i,j)=beta(0); 
+        mu(i, j + k)=beta(0); 
       } 
       // else if(meter < 3){
         // // Rcpp::Rcout <<"The meter value is:" << meter << std::endl;  
       // }
-    }
+    } // k
+    } // j
   }
 // ProfilerStop();
   return ( mu ); 

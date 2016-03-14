@@ -63,8 +63,8 @@ Eigen::MatrixXd RmullwlskCCsort2( const Eigen::Map<Eigen::VectorXd> & bw, const 
 
 
   for (unsigned int i = 0; i != xgridN; ++i) {  
-    const double xl = xgrid(i) - bw(0), 
-                 xu = xgrid(i) + bw(0);
+    const double xl = xgrid(i) - bw(0) - 1e-6, 
+                 xu = xgrid(i) + bw(0) + 1e-6;
 
     unsigned int indl = std::lower_bound(tDat, tDat + n, xl) - tDat,  
                  indu = std::upper_bound(tDat, tDat + n, xu) - tDat;
