@@ -41,6 +41,10 @@ RmullwlskCC <- function(bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwChec
     .Call('fdapace_RmullwlskCC', PACKAGE = 'fdapace', bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck)
 }
 
+RmullwlskCCpart <- function(bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck) {
+    .Call('fdapace_RmullwlskCCpart', PACKAGE = 'fdapace', bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck)
+}
+
 RmullwlskCCsort <- function(bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck) {
     .Call('fdapace_RmullwlskCCsort', PACKAGE = 'fdapace', bw, kernel_type, tPairs, cxxn, win, xgrid, ygrid, bwCheck)
 }

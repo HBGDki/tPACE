@@ -23,6 +23,11 @@ expect_equal(tmp2, tmp4)
 # tmp3 <- Lwls2D2(bw, 'epan', xin, yin, win, xout1, xout2, method='tree')
 # summary(as.numeric(abs(tmp - tmp3)))
 
+# library(mgcv)
+# dat <- as.data.frame(cbind(xin, yin))
+# names(dat) <- c('x1', 'x2', 'y')
+# system.time(tmp <- gam(y ~ s(x1, x2, bs='tp'), data=dat))
+
 m1 <- microbenchmark(tmp <-Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='plain'), times=10L)
 m2 <- microbenchmark(tmp2 <- Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='sort1'), times=10L)
 # which(abs(tmp2 - tmp) > 1e-10, arr.ind=TRUE)
