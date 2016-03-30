@@ -3,6 +3,7 @@
 #include <string>       // to read in the kernel name
 #include <vector>       // to use vectors
 #include <algorithm>    // to get the intersect, sort, lower_bound, upper_bound
+// #include <gperftools/profiler.h>
 
 typedef std::pair<double, unsigned int> valIndPair;
 bool compPair(const valIndPair& l, const valIndPair& r) {
@@ -49,6 +50,7 @@ Eigen::MatrixXd RmullwlskCCsort2( const Eigen::Map<Eigen::VectorXd> & bw, const 
     return (tPairs);
   } 
 
+// ProfilerStart("sort.log");
   // Start the actual smoother here  
   const unsigned int xgridN = xgrid.size();  
   const unsigned int ygridN = ygrid.size();  
@@ -183,6 +185,7 @@ Eigen::MatrixXd RmullwlskCCsort2( const Eigen::Map<Eigen::VectorXd> & bw, const 
      return(checker);
   } 
       
+// ProfilerStop();
   return ( mu ); 
 }
 
