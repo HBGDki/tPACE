@@ -22,7 +22,7 @@
 #'             verbose=TRUE))
 #' CreatePathPlot(res, subset=1:5)
 #' @export
-
+#TODO: set xlim and ylim, pathType='spagetti'
 CreatePathPlot = function(fpcaObj, subset, k=NULL, inputData=fpcaObj[['inputData']], 
                           showObs=!is.null(inputData),  derOptns = NULL, ...){
   
@@ -67,7 +67,8 @@ CreatePathPlot = function(fpcaObj, subset, k=NULL, inputData=fpcaObj[['inputData
   
   if( showObs ){
     do.call(matplot, c(list(x=obst, y=obsy, type='p'), args1))
-    do.call(matplot, c(list(x=workGrid, y=t(fit), type='l', add=TRUE)))
+    do.call(matplot, c(list(x=workGrid, y=t(fit), type='l', add=TRUE), 
+                       args1[!names(args1) %in% c('xlab', 'ylab', 'main')]))
   } else {
       do.call(matplot, c(list(x=workGrid, y=t(fit), type='l'), args1))
   }
