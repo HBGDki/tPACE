@@ -24,7 +24,6 @@ CreateModeOfVarPlot <-function(fpcaObj,  k = 1, ...){
   
   args1 <- list( main="Default Title", xlab='s', ylab='')  
   inargs <- list(...)
-  args1[names(inargs)] <- inargs
   
   if(k> length(fpcaObj$lambda) ){
     stop("You are asking to plot a mode of variation that is incomputable.")
@@ -39,12 +38,14 @@ CreateModeOfVarPlot <-function(fpcaObj,  k = 1, ...){
   phi = fpcaObj$phi[,k]
   phi1 = fpcaObj$phi[,1]
   
-  do.call(plot, c(list(type='n'), list(x=s), list(y=s), 
-                  list(ylim=range(c( 3* sigma1 * phi1 + mu , -3* sigma1 * phi1 + mu ))), args1))
+  args1$ylim = range(c( 3* sigma1 * phi1 + mu , -3* sigma1 * phi1 + mu ))
+  args1[names(inargs)] <- inargs
+  
+  do.call(plot, c(list(type='n'), list(x=s), list(y=s), args1))
   grid()    
   polygon(x=c(s, rev(s)), y = c( -2* sigma * phi + mu, 
                                  rev(2* sigma * phi + mu)), col= 'lightgrey',border=NA)
   polygon(x=c(s, rev(s)), y = c( -1* sigma * phi + mu, 
                                  rev(1* sigma * phi + mu)), col= 'darkgrey',border=NA)  
-  lines(x=s, y=mu , col='red')
+  do.call(lines, c(list(x=s, y=mu , col='red'), args1))
 }
