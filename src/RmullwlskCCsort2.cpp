@@ -82,8 +82,8 @@ Eigen::MatrixXd RmullwlskCCsort2( const Eigen::Map<Eigen::VectorXd> & bw, const 
                                       yuIt = yval.begin();
 
     for (unsigned int j = 0; j != ygridN; ++j) { 
-      const double yl = ygrid(j) - bw(1), 
-                   yu = ygrid(j) + bw(1);
+      const double yl = ygrid(j) - bw(1) - 1e-6, 
+                   yu = ygrid(j) + bw(1) + 1e-6;
 
       //locating local window (LOL) (bad joke)
       std::vector <unsigned int> indx; 

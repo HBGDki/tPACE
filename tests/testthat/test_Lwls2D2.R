@@ -32,7 +32,7 @@ m1 <- microbenchmark(tmp <-Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout
 m2 <- microbenchmark(tmp2 <- Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='sort1'), times=10L)
 # which(abs(tmp2 - tmp) > 1e-10, arr.ind=TRUE)
 m4 <- microbenchmark(tmp4 <- Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='sort2'), times=10L)
-microbenchmark(tmp3 <- Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='tree'), times=1L)
+# microbenchmark(tmp3 <- Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2, method='tree'), times=1L)
 expect_equal(tmp2, tmp4)
 
 # microbenchmark(tmp1 <- Lwls2D2(c(bw, bw), 'epan', xin, yin, win, xout1, xout2), times=1L)
