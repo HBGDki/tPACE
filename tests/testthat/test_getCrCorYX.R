@@ -1,4 +1,6 @@
-library(testthat)
+# library(testthat)
+
+context("getCrCorYX")
 
 test_that('GetCrCorYX works on a trivial example', {
 

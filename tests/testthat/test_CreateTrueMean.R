@@ -1,6 +1,8 @@
 
 myEps <- .Machine$double.eps;
 
+context("CreateTrueMean")
+
 test_that(" basic 0/1 combination matches MATLAB output ", {
   expect_equal( CreateTrueMean(1,0), 0)
   expect_equal( CreateTrueMean(0,1), 0)

@@ -1,5 +1,7 @@
 # devtools::load_all()
 
+context("pc_covE - NEEDS TESTS!")
+
 p0 <- list(dataType='Sparse', error=TRUE, kernel='epan')
 p1 <- list(dataType='Dense', error=TRUE, kernel='epan')
 

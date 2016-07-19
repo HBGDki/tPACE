@@ -1,5 +1,6 @@
-library(testthat)
+# library(testthat)
 # devtools::load_all()
+context("createDesignPlot - NEEDS TESTS")
 
 # Uniform time points
 ## a speed test

@@ -3,6 +3,8 @@ library(testthat)
 
 # GMeanAndGCV
 
+context("BinRawCov")
+
 set.seed(1)
 pts <- c(0, 1, 3:100) / 100
 regGrid <- seq(0, 1, by=0.1)

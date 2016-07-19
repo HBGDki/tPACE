@@ -1,5 +1,7 @@
 # devtools::load_all()
-library(testthat)
+# library(testthat)
+
+context("FPCAder")
 
 test_that('FPCAder correct derivatives of mean for dense case', {
   set.seed(1)

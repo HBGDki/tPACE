@@ -1,4 +1,7 @@
 # devtools::load_all()
+
+context("fitted")
+
 set.seed(222)
 n <- 201
 pts <- seq(0, 1, by=0.015)

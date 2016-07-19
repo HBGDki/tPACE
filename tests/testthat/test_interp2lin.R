@@ -1,9 +1,13 @@
-# setwd('misc/') 
+# setwd('misc/')
 # devtools::load_all()
 # devtools::load_all('../RPACE/tPACE')
 
-library(testthat)
-library(pracma)
+# library(testthat)
+
+context("interp2lin")
+
+require(pracma, quietly = TRUE)
+
 # These check out OK.
 U1 = test_that("basic pracma::interp2 example gives same output ", {
 

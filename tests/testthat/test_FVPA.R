@@ -1,5 +1,7 @@
 # devtools::load_all()
-library(testthat)
+# library(testthat)
+
+context("FVPA")
 
 test_that('noisy dense data, default arguments: ie. cross-sectional mu/cov, use IN score', {
 

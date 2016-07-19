@@ -1,6 +1,8 @@
 # devtools::load_all()
 ##options(error=recover)
-library(testthat)
+# library(testthat)
+
+context("gcvlwls2dV2")
 
 try(silent = TRUE, load(system.file('testdata', 'dataForGetRawCov.RData', package='fdapace')))
 # try(silent = TRUE, load(system.file('testdata', 'dataForGetRawCov.RData', package='fdapace')))

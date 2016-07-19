@@ -1,6 +1,8 @@
 # devtools::load_all()
-library(testthat)
+# library(testthat)
 ##options(error=recover)
+
+context("GetCovDense")
 
 trueLam <- 4 / ((2 * (1:50) - 1 ) * pi) ^ 2
 

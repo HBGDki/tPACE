@@ -1,8 +1,9 @@
-# setwd('misc/', bwCheck = FALSE) 
+# setwd('misc/', bwCheck = FALSE)
 
-library(Rcpp)
+context("Rrotatedmullwlsk")
+require(Rcpp, quietly = TRUE)
 
-library(testthat)
+# library(testthat)
 
 try( silent=TRUE, load(system.file('testdata', 'InputForRotatedMllwlskInCpp.RData', package='fdapace')))
 try( silent=TRUE, load(system.file('testdata', 'InputForRotatedMllwlskInCpp.RData', package='fdapace')))

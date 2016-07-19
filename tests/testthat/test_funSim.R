@@ -1,4 +1,7 @@
- 
+
+
+context("funSim - NEEDS TESTS and to fix white spacing")
+
   N = 333;
   set.seed(123)
   M = 100;

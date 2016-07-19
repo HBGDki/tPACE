@@ -1,4 +1,6 @@
-cat("\ntests for 'MapX1D'")
+# cat("\ntests for 'MapX1D'")
+
+context("mapX1d")
 
 test_that("basic arguments do not return any errors ", {
  xn = c(1:4,16)

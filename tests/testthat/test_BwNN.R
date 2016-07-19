@@ -1,7 +1,7 @@
 # devtools::load_all(); library(testthat)
 
+context("BwNN")
 
-library(testthat)
 test_that('FindNN is correct', {
   tPairs <- matrix(c(0, 0,
                      1, 1,
@@ -18,7 +18,6 @@ test_that('FindNN is correct', {
 
 
 test_that('BWNN works for large sample', {
-  library(fdapace)
   set.seed(1)
   n <- 100
   pts <- seq(0, 1, length.out=100)

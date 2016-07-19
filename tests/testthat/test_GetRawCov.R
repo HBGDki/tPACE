@@ -1,4 +1,7 @@
 
+
+context("GetRawCov")
+
 myEps <- .Machine$double.eps;
 load(system.file('testdata', 'dataForGetRawCov.RData', package='fdapace'))
 AA = GetRawCov(y,t, sort(unlist(t)), mu,'Sparse',TRUE)  #Matches ML output

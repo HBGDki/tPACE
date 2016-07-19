@@ -1,6 +1,8 @@
 # devtools::load_all()
 #options(error=recover)
-library(testthat)
+# library(testthat)
+
+context("GetRho")
 
 # set up
 y <- list(c(1, 2), 4, c(0, 2, 3))

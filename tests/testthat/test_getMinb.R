@@ -1,5 +1,8 @@
 # devtools::load_all()
-library(testthat)
+# library(testthat)
+
+context("getMinib")
+
 load(system.file('testdata', 'dataForGcvLwlsTest.RData', package='fdapace'))
 # rcov <- GetRawCov(y,t, sort(unlist(t)), mu,'Sparse',FALSE) #Matches ML output
 test_that('2D min bandwidth is similar to Matlab', {

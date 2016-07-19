@@ -1,6 +1,8 @@
 # devtools::load_all()
 library(testthat)
 
+context("GetCrCovYX")
+
 test_that('The binned crosscov is the same as unbinned',{
 
   N  = 100

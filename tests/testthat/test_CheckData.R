@@ -1,4 +1,4 @@
- cat("\nTests for 'CheckData'")
+context("CheckData")
 
 test_that("basic valid lists arguments do not return any errors ", {
   CheckData( list(c(1,2,3), c(1,2)),list(c(1,2,3), c(1,2)))

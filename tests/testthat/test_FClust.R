@@ -1,5 +1,7 @@
 # devtools::load_all()
-library(testthat)
+# library(testthat)
+
+context("FClust")
 
 test_that('the growth example works.', {
 

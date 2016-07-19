@@ -1,5 +1,7 @@
 # devtools::load_all()
-library(testthat)
+# library(testthat)
+
+context("GetBinnedCurve")
 
 test_that('GetBinnedCurve() works on trivial examples', {
   x = 1:100

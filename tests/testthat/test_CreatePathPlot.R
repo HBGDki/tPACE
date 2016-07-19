@@ -1,5 +1,7 @@
-library(testthat)
+# library(testthat)
 # devtools::load_all()
+
+context("CreatePathPlot")
 
 set.seed(1)
 n <- 300

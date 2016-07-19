@@ -1,5 +1,8 @@
- cat("\nTests for 'GetSmoothedMeanCurve.R'")
-library(testthat)
+ # cat("\nTests for 'GetSmoothedMeanCurve.R'")
+# library(testthat)
+
+context("GetSmoothedMeanCurve")
+
 load(system.file('testdata', 'dataGeneratedByExampleSeed123.RData', package='fdapace'))
 
 p = list(kernel='epan')

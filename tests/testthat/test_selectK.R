@@ -1,5 +1,8 @@
-library(testthat)
-library(mvtnorm)
+
+context("selectK")
+
+# library(testthat)
+require(mvtnorm, quietly = TRUE)
 # devtools::load_all()
 
 test_that("SelectK works for dense FPCA Wiener process with measurement error",{

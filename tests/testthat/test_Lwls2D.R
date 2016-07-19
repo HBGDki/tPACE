@@ -1,5 +1,7 @@
 # devtools::load_all()
-library(testthat)
+# library(testthat)
+
+context("Lwls2d")
 
 # as in test_Rmullwlsk.R
 try(silent=TRUE, load(system.file('testdata', 'InputFormMllwlskInCpp.RData', package='fdapace')))

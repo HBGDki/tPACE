@@ -1,6 +1,8 @@
- cat("\nTests for 'SetOptions'")
+# cat("\nTests for 'SetOptions'")
 
-library(testthat)
+context("SetOptions")
+
+# library(testthat)
 
 
  optns = list(methodXi = NULL)

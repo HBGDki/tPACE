@@ -1,13 +1,16 @@
+
+context("Rmullwlsk")
+
 # devtools::load_all()
 # setwd('misc/')
 load(system.file('testdata', 'InputFormMllwlskInCpp.RData', package='fdapace'))
 if( !exists('Rmullwlsk') ) {
-  library(Rcpp)
+  require(Rcpp, quietly = TRUE)
   sourceCpp('src/Rmullwlsk.cpp')
 }
 IN = InputFormMllwlskInCpp
 
-library(testthat)
+# library(testthat)
 
 # tolerance is relatively large because we cannot control of 2500 * 1e-16 anyway
 # I have already tried using .inverse instead of LLT for the solution and that

@@ -1,5 +1,7 @@
 #options(error=recover)
-library(testthat)
+# library(testthat)
+
+context("CreateFolds")
 
 test_that('SimpleFolds works', {
   samp <- 1:10

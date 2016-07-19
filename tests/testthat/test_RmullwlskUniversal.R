@@ -1,4 +1,7 @@
-library(testthat)
+
+context("RmullwlskUniversal")
+
+# library(testthat)
 load(system.file('testdata', 'InputFormMllwlskInCpp.RData', package='fdapace'))
 IN = InputFormMllwlskInCpp
 

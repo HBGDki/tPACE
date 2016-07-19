@@ -1,4 +1,6 @@
- cat("\nTests for 'Minb'")
+# cat("\nTests for 'Minb'")
+
+context("minib")
 
 test_that("basic vector arguments do not return any errors ", {
   expect_equal( Minb(c(1,2,3,4.1),  -1),  NaN)

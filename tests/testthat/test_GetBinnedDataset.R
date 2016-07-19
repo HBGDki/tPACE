@@ -1,6 +1,8 @@
 # devtools::load_all()
 library(testthat)
 
+context("GetBinnedDataset")
+
 test_that('GetBinnedDataset() works on trivial examples', {
 
   y = list( c(1:1000), c(3:1012))

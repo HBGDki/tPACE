@@ -1,6 +1,8 @@
 library(testthat)
 #source('GetRawCrCovFuncScal.R')
 
+context("GetRawCrCovFuncScal")
+
 # These check out OK.
 test_that("basic R output matche MATLAB output for different means", {
 

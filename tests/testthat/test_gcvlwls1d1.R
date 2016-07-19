@@ -1,8 +1,10 @@
- cat("\nTests for 'GCVLwls1D1.R'")
+# cat("\nTests for 'GCVLwls1D1.R'")
+context("GCVwls1d1")
 
-load(system.file('testdata', 'dataForGcvLwlsTest.RData', package='fdapace'))
 
 test_that("basic  optimal bandwidth choice for the mean function use GCV method matches MATLAB for Sparse data", {
+
+  load(system.file('testdata', 'dataForGcvLwlsTest.RData', package='fdapace'))
 
   A <- GCVLwls1D1(y,t,'epan',1,0,'Sparse')
   expect_equal( A$bOpt, 2.071354057811459 )

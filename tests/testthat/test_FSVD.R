@@ -1,7 +1,9 @@
 if (Sys.getenv('TRAVIS') != 'true') {# Do not run on travis since this is slow
+
+context("FSVD")
 # devtools::load_all()
-library(testthat)
-library(mvtnorm)
+# library(testthat)
+require(mvtnorm, quietly = TRUE)
 
 ### Simulaiton setting in FSVD paper
 # Generate X, Y functional samples with certain covariance structure

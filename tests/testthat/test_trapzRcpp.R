@@ -1,5 +1,7 @@
 # devtools::load_all()
-library(testthat)
+# library(testthat)
+
+context("trapzRcpp")
 
 test_that('trapzRcpp works on a trivial example', {
   x = c(0,2)

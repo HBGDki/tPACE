@@ -1,6 +1,8 @@
 # devtools::load_all()
-library(testthat)
+# library(testthat)
 #source('GetRawCrCovFuncFunc.R')
+
+context("GetRawCrCovFuncFunc")
 
 # These check out OK.
 test_that("basic R output matche MATLAB output for different means", {

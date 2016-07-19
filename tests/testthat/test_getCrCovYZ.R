@@ -1,5 +1,7 @@
 # devtools::load_all()
-library(testthat)
+# library(testthat)
+
+context("getCrCovYZ")
 
 test_that('The cross-covariance in the case of a dense matrix against a constant vector is zero and in the case of a steadily increasing matrix against a steadily increasing vector is stable',{
   set.seed(1)

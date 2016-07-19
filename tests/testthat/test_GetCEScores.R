@@ -1,6 +1,8 @@
 # devtools::load_all()
 #options(error=recover)
-library(testthat)
+# library(testthat)
+
+context("GetCEScores")
 
 # test GetIndCEScores
 obsGrid <- seq(0, 1, by=0.1)

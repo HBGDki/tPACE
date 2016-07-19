@@ -1,4 +1,6 @@
- cat("\nTests for 'MakeFPCAInputs'")
+# cat("\nTests for 'MakeFPCAInputs'")
+
+context("makeFPCAInputs")
 
 
 test_that("basic arguments give reasonable output ", {

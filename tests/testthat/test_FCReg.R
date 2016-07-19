@@ -1,6 +1,8 @@
-library(MASS)
-library(testthat)
+require(MASS, quietly = TRUE)
+# library(testthat)
 # devtools::load_all()
+
+context("FCReg")
 
 test_that('Simple dense case works', {
   # X(t) = Y(t), and they are contaminated with errors.
