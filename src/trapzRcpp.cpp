@@ -15,15 +15,15 @@ template <class iter> bool is_sorted (iter begin, iter end)
 }
 
 // [[Rcpp::export]]
-double trapzRcpp(const Rcpp::NumericVector X, const Rcpp::NumericVector Y){   
+double trapzRcpp(const Rcpp::NumericVector X, const Rcpp::NumericVector Y){
 
   if( Y.size() != X.size()){
     Rcpp::stop("The input Y-grid does not have the same number of points as input X-grid.");
   }
   if(is_sorted(X.begin(),X.end())){
-    double trapzsum = 0; 
+    double trapzsum = 0;
     for (unsigned int ind = 0; ind !=  X.size()-1; ++ind){
-      trapzsum += 0.5 * (X[ind + 1] - X[ind]) *(Y[ind] + Y[ind + 1]); 
+      trapzsum += 0.5 * (X[ind + 1] - X[ind]) *(Y[ind] + Y[ind + 1]);
     }
     return trapzsum;
   } else {

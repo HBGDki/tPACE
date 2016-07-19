@@ -10,10 +10,10 @@ CreateDesignPlot(Lt, obsGrid = NULL, isColorPlot = TRUE,
 \arguments{
 \item{Lt}{a list of observed time points for functional data}
 
-\item{obsGrid}{a vector of sorted observed time points. Default to the 
+\item{obsGrid}{a vector of sorted observed time points. Default to the
 unique time points in Lt.}
 
-\item{isColorPlot}{an option for colorful plot: 
+\item{isColorPlot}{an option for colorful plot:
 TRUE: create color plot with color indicating counts
 FALSE: create black and white plot with dots indicating observed time pairs}
 

@@ -4,11 +4,11 @@ GetRawCrCovFuncFunc <- function(Ly1, Lt1 = NULL, Ymu1, Ly2, Lt2 = NULL, Ymu2){
   if ( is.matrix(Ly1) && is.matrix(Ly2) && is.null(Lt1) && is.null(Lt2) ){
      if( dim(Ly1)[1] != dim(Ly2)[1] ){
        stop("Ly1 and Ly2 are not compatible")
-     } 
+     }
      KK = cov(Ly1,Ly2,use="pairwise.complete.obs")
      RCC <- list(rawCCov =  1 * (KK), tpairn = NULL)
      class(RCC) <- 'RawCCDense'
-     return( RCC )    
+     return( RCC )
   }
   # otherwise assume SPARSE
   if ( ! CheckEqualLengths(Lt1,Ly1)){
@@ -16,17 +16,17 @@ GetRawCrCovFuncFunc <- function(Ly1, Lt1 = NULL, Ymu1, Ly2, Lt2 = NULL, Ymu2){
   }
   if ( ! CheckEqualLengths(Lt2,Ly2) ){
     stop("Lt2 and Ly2 are not compatible")
-  }    
+  }
   ulLt1 = unlist(Lt1)
   ulLt2 = unlist(Lt2)
   if ( ! CheckEqualLengths(unique(ulLt1), Ymu1)){
     stop("Lt1 and Ymu1 are not compatible")
-  }       
+  }
   if ( ! CheckEqualLengths(unique(ulLt2), Ymu2)){
     stop("Lt2 and Ymu2 are not compatible")
-  }       
+  }
 
-  # Centre both lists according to their means    
+  # Centre both lists according to their means
   muY1 <- approxfun(x= sort(unique(ulLt1)), y = Ymu1)
   Ly1c <- lapply(1:length(Ly1), function(i) Ly1[[i]]- muY1( Lt1[[i]]) )
   muY2 <- approxfun(x= sort(unique(ulLt2)), y = Ymu2)
@@ -39,7 +39,7 @@ GetRawCrCovFuncFunc <- function(Ly1, Lt1 = NULL, Ymu1, Ly2, Lt2 = NULL, Ymu2){
  # for (i in 1:length(Ly1c)){
  #   q = length(Ly1c[[i]])
  #   p = length(Ly2c[[i]])
- #   cyy <- c( cyy, rep(x= Ly1c[[i]],each=p) * rep(x= Ly2c[[i]],times=q)  )  
+ #   cyy <- c( cyy, rep(x= Ly1c[[i]],each=p) * rep(x= Ly2c[[i]],times=q)  )
  #   tPairs1 <- c( tPairs1,  rep(Lt1[[i]],each=p))
  #   tPairs2 <- c( tPairs2,  rep(Lt2[[i]],times=q))
  # }
@@ -56,6 +56,6 @@ GetRawCrCovFuncFunc <- function(Ly1, Lt1 = NULL, Ymu1, Ly2, Lt2 = NULL, Ymu2){
   return(RCC)
 }
 
-CheckEqualLengths <- function(x1,x2){ 
+CheckEqualLengths <- function(x1,x2){
   return( all.equal( unname(sapply(x1, length)), unname(sapply(x2, length) )))
-} 
+}

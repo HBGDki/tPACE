@@ -1,20 +1,23 @@
+
+context("Rmullwlsk")
+
 # devtools::load_all()
-# setwd('misc/') 
+# setwd('misc/')
 load(system.file('testdata', 'InputFormMllwlskInCpp.RData', package='fdapace'))
 if( !exists('Rmullwlsk') ) {
-  library(Rcpp)
+  require(Rcpp, quietly = TRUE)
   sourceCpp('src/Rmullwlsk.cpp')
 }
 IN = InputFormMllwlskInCpp
- 
-library(testthat)
 
-# tolerance is relatively large because we cannot control of 2500 * 1e-16 anyway 
+# library(testthat)
+
+# tolerance is relatively large because we cannot control of 2500 * 1e-16 anyway
 # I have already tried using .inverse instead of LLT for the solution and that
 # did not make a difference numericallly (small systems anyway)
 
 # These check out OK.
-U = test_that("basic Epanetchnikov kernel inputs match MATLAB output for different bandwidths", { 
+U = test_that("basic Epanetchnikov kernel inputs match MATLAB output for different bandwidths", {
 
   AA = Rmullwlsk(2* IN$bw,t(IN$tPairs),cxxn=IN$cxxn, xgrid=IN$regGrid, ygrid=IN$regGrid, kernel_type='epan',win=rep(1,38), bwCheck = FALSE)
   BB = Rmullwlsk( c(5,3),t(IN$tPairs),cxxn=IN$cxxn, xgrid=IN$regGrid, ygrid=IN$regGrid, kernel_type='epan',win=rep(1,38), bwCheck = FALSE)
@@ -26,7 +29,7 @@ U = test_that("basic Epanetchnikov kernel inputs match MATLAB output for differe
 })
 
 # These check out OK.
-V = test_that("basic rectangular kernel inputs match MATLAB output for different bandwidths", { 
+V = test_that("basic rectangular kernel inputs match MATLAB output for different bandwidths", {
 
   AA = Rmullwlsk(2* IN$bw,t(IN$tPairs),cxxn=IN$cxxn, xgrid=IN$regGrid, ygrid=IN$regGrid, kernel_type='rect',win=rep(1,38), bwCheck = FALSE)
   BB = Rmullwlsk( c(5,3),t(IN$tPairs),cxxn=IN$cxxn, xgrid=IN$regGrid, ygrid=IN$regGrid, kernel_type='rect',win=rep(1,38), bwCheck = FALSE)

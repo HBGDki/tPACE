@@ -1,5 +1,7 @@
-library(testthat)
+# library(testthat)
 # devtools::load_all()
+
+context("CreatePathPlot")
 
 set.seed(1)
 n <- 300
@@ -7,8 +9,8 @@ pts <- seq(0, 1, by=0.05)
 sampWiener <- Wiener(n, pts)
 sampWiener <- sampWiener + matrix(rnorm(n, sd=1), n, length(pts))
 sampWiener <- Sparsify(sampWiener, pts, 1:5)
-res <- FPCA(sampWiener$Ly, sampWiener$Lt, 
-            list(dataType='Sparse', kernel='epan', 
+res <- FPCA(sampWiener$Ly, sampWiener$Lt,
+            list(dataType='Sparse', kernel='epan',
                  methodBwCov='GCV'))
 
 test_that('CreatePathPlot works', {

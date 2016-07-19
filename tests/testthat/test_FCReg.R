@@ -1,6 +1,8 @@
-library(MASS)
-library(testthat)
+require(MASS, quietly = TRUE)
+# library(testthat)
 # devtools::load_all()
+
+context("FCReg")
 
 test_that('Simple dense case works', {
   # X(t) = Y(t), and they are contaminated with errors.
@@ -15,12 +17,12 @@ test_that('Simple dense case works', {
   Y <- t(apply(X, 1, `*`, e2=pts))
   Xn <- X + rnorm(n * p, sd=sigma)
   Yn <- Y + rnorm(n * p, sd=sigma)
-  vars <- list(X=MakeFPCAInputs(tVec=T, yVec=Xn), 
+  vars <- list(X=MakeFPCAInputs(tVec=T, yVec=Xn),
                Y=MakeFPCAInputs(tVec=T, yVec=Yn))
-  
+
   bw <- 0.25 * diff(range(T))
   kern <- 'epan'
-  
+
   res <- FCReg(vars, bw, bw, T, kern, measurementError=FALSE)
   resN <- FCReg(vars, bw, bw, T, kern, measurementError=TRUE)
   # plot(pts, res$beta); abline(a=0, b=1)
@@ -28,12 +30,12 @@ test_that('Simple dense case works', {
   expect_equal(as.numeric(res$beta), pts, scale=1, tolerance=0.1)
   expect_equal(as.numeric(resN$beta), pts, scale=1, tolerance=0.1)
   # Assume noise is better than no noise
-  expect_lt(mean((as.numeric(resN$beta) - pts)^2), mean((as.numeric(res$beta) - pts)^2)) 
+  expect_lt(mean((as.numeric(resN$beta) - pts)^2), mean((as.numeric(res$beta) - pts)^2))
 })
 
 # Y(t) = \beta_0(t) + \beta_1(t) X_1(t) + \beta_2(t) X_2(t) + \beta_3 Z_3 + \beta_4 Z_4 + \epsilon
 # X_1(t) = \mu_{X_1}(t) + Z_1 \phi_1(t); X_2(t) = \mu_{X_2}(t) + Z_2 \phi_2(t);
-# \mu_{X_1}(t) = 2t, \mu_{X_2}(t) = -2t 
+# \mu_{X_1}(t) = 2t, \mu_{X_2}(t) = -2t
 # (Z_1, \dots, Z_4) \sim N(0, \Sigma). \Sigma = 1/4 + diag(3/4)
 # \phi_1(t) = 1, \phi_2(t) = sqrt(2) * cos(\pi t), t \in [0, 1]. So $cov(X_1(s), X_2(t)) = sqrt(2)/4 \cos(\pi t).$
 # \epsilon \sim N(0, \sigma^2).
@@ -78,12 +80,12 @@ Ysp <- Sparsify(Y, T, sparsity)
 outGrid <- round(seq(min(T), 1, by=0.05), 2)
 vars <- list(X_1=X_1sp, X_2=X_2sp, Z_3=Z[, 3], Z_4=Z[, 4], Y=Ysp)
 
-test_that('Scaler-scaler cov', 
+test_that('Scaler-scaler cov',
   expect_equal(as.numeric(uniCov(Z[, 3], Z[, 4])), cov(Z[, 3], Z[, 4]))
 )
 
 test_that('Scaler-function cov = Function-scaler cov', {
-  expect_equal(uniCov(X_1sp, Z[, 3], bw, outGrid), 
+  expect_equal(uniCov(X_1sp, Z[, 3], bw, outGrid),
     t(uniCov(Z[, 3], X_1sp, bw, outGrid)))
 })
 
@@ -105,7 +107,7 @@ test_that('Function-function cov works', {
 
   # y-direction is close to 1/4 * (1.5 + cos(pi t))
   expect_true(sqrt(mean((colMeans(cov12) - sqrt(2) / 4 * cos(pi * outGrid))^2, trim=0.1)) < 0.133)
-  
+
   # 1D and 2D smoother is similar
   expect_equal(diag(cov12), diag(cov12_1D), tolerance=0.2)
 })
@@ -161,7 +163,7 @@ expect_error(FCReg(vars, bw, bw, outGrid, measurementError=TRUE, diag1D='all'), 
 
 test_that('1D and 2D covariance estimates are similar', {
   expect_true(sqrt(mean(
-    (withError2D[['beta']] - withError1D[['beta']])^2, 
+    (withError2D[['beta']] - withError1D[['beta']])^2,
   trim=0.2)) < 0.2)
   expect_equal(noError2D[['beta']], noError1D[['beta']], tolerance=0.1)
 })
@@ -177,7 +179,7 @@ noError1DEpan <- FCReg(vars,  bw,bw, outGrid, measurementError=FALSE, diag1D='al
 
 test_that('Different kernel type works', {
   expect_true(sqrt(mean(
-    (withError2DRect[['beta']] - withError1DRect[['beta']])^2, 
+    (withError2DRect[['beta']] - withError1DRect[['beta']])^2,
   trim=0.2)) < 0.2)
   expect_equal(noError2DRect[['beta']], noError2D[['beta']], tolerance=0.2)
   expect_equal(noError1DRect[['beta']], noError1D[['beta']], tolerance=0.2)
@@ -225,11 +227,11 @@ test_that('Test based on previous implementation: simple concurrent regression w
   betaFunc1 = c(2,2) %*%  t(matrix(c(eigFunct1(s),eigFunct2(s)), ncol=2))
   z1 <- rnorm(N,sd=1)
   # Create scalar dep. variable a
-  y = matrix(rep(0,N*M), ncol = M); 
-  yTrue = matrix(rep(0,N*M), ncol = M); 
-  for (i in 1:N) { 
-    y[i,] = rnorm(sd=1.99,0, n=M) + z1[i] * 2.5 +  0.2 * s +(xTrue[i,]) * t(betaFunc1); 
-    yTrue[i,] = rnorm(sd=0.0011,0, n=M) + z1[i] * 2.5 +  0.2 * s +(xTrue[i,]) * t(betaFunc1); 
+  y = matrix(rep(0,N*M), ncol = M);
+  yTrue = matrix(rep(0,N*M), ncol = M);
+  for (i in 1:N) {
+    y[i,] = rnorm(sd=1.99,0, n=M) + z1[i] * 2.5 +  0.2 * s +(xTrue[i,]) * t(betaFunc1);
+    yTrue[i,] = rnorm(sd=0.0011,0, n=M) + z1[i] * 2.5 +  0.2 * s +(xTrue[i,]) * t(betaFunc1);
   }
   sparsitySchedule = 1:16;
   set.seed(1)
@@ -246,6 +248,3 @@ test_that('Test based on previous implementation: simple concurrent regression w
   expect_gt( cor( Q$beta0, 0.2*s), 0.95) # this should be change to beta0 at some point.
   expect_gt( cor(Q$beta[1,], as.vector(betaFunc1)), 0.99)
 })
-
-
-

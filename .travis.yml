@@ -14,5 +14,16 @@ addons:
       - tcl-dev
       - tk-dev
       - texlive-latex-extra
-      
+
 warnings_are_errors: false
+
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+branches:
+  only:
+    - master
+    - dev
+    - travis

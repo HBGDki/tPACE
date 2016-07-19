@@ -14,17 +14,17 @@ template <class ForwardIterator> bool is_sorted (ForwardIterator first, ForwardI
 }
 
 // [[Rcpp::export]]
-Rcpp::NumericVector cumtrapzRcpp(const Rcpp::NumericVector X,const Rcpp::NumericVector Y){   
+Rcpp::NumericVector cumtrapzRcpp(const Rcpp::NumericVector X,const Rcpp::NumericVector Y){
 
   // Basic check
   if( Y.size() != X.size()){
     Rcpp::stop("The input Y-grid does not have the same number of points as input X-grid.");
   }
   if(is_sorted(X.begin(),X.end())){
-    Rcpp::NumericVector  ctrapzsum(X.size()); 
-    ctrapzsum[0] = 0.0;    
+    Rcpp::NumericVector  ctrapzsum(X.size());
+    ctrapzsum[0] = 0.0;
     for (unsigned int ind = 0; ind !=  X.size()-1; ++ind){
-      ctrapzsum[ind+1] = 0.5 * (X[ind + 1] - X[ind]) *(Y[ind] + Y[ind + 1]) + ctrapzsum[ind];  
+      ctrapzsum[ind+1] = 0.5 * (X[ind + 1] - X[ind]) *(Y[ind] + Y[ind + 1]) + ctrapzsum[ind];
     }
     return ctrapzsum;
   } else {

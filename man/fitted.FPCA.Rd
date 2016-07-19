@@ -23,7 +23,7 @@ Combine the zero-meaned fitted values and the interpolated mean to get the fitte
 Estimates are given on the work-grid, not on the observation grid. Use ConvertSupport to map the estimates to your desired domain.
 }
 \details{
-Available derivation control options are 
+Available derivation control options are
 \describe{
 \item{p}{The order of the derivatives returned (default: 0, max: 2)}
 \item{method}{The method used to produce the sample of derivatives ('EIG' (default) or 'QUO'). See Liu and Mueller (2009) for more details}
@@ -37,7 +37,7 @@ n <- 20
 pts <- seq(0, 1, by=0.05)
 sampWiener <- Wiener(n, pts)
 sampWiener <- Sparsify(sampWiener, pts, 10)
-res <- FPCA(sampWiener$Ly, sampWiener$Lt, 
+res <- FPCA(sampWiener$Ly, sampWiener$Lt,
             list(dataType='Sparse', error=FALSE, kernel='epan', verbose=TRUE))
 fittedY <- fitted(res)
 }

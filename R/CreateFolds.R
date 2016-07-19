@@ -11,15 +11,15 @@ CreateFolds <- function(y, k=10) {
   if (!is.factor(y) && length(y) / length(uniqY) >= k) {
 # Intepret the integer-valued y as class labels. Stratify if the number of class labels is <= 5.
     y <- factor(y)
-  } else if (is.numeric(y)) { 
+  } else if (is.numeric(y)) {
 # 5-stratum Stratified sampling
     if (n >= 5 * k) {
       breaks <- unique(quantile(y, probs=seq(0, 1, length.out=5)))
       y <- as.integer(cut(y, breaks, include.lowest=TRUE))
-    } else 
+    } else
       y <- rep(1, length(y))
   }
-  
+
   sampList <- tapply(seq_along(y), y, SimpleFolds, k=k, simplify=FALSE)
   list0 <- list()
   length(list0) <- k

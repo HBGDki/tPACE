@@ -1,5 +1,7 @@
 # devtools::load_all()
-library(testthat)
+# library(testthat)
+
+context("GetBinnedCurve")
 
 test_that('GetBinnedCurve() works on trivial examples', {
   x = 1:100
@@ -27,9 +29,3 @@ test_that('GetBinnedCurve() works for large case',{
  expect_equal(  sd(A$newy), 1.155276018617079e+03)
  expect_equal(  sd(A$midpoint), 5.774934350276200e+02)
 })
-
-
-
-
-
-

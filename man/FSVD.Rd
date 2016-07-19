@@ -43,7 +43,7 @@ A list containing the following fields:
 FSVD for a pair of dense or sparse functional data.
 }
 \details{
-Available control options for SVDoptns are: 
+Available control options for SVDoptns are:
 \describe{
 \item{bw1}{The bandwidth value for the smoothed cross-covariance function across the direction of sample 1; positive numeric - default: determine automatically based on 'methodBwCov'}
 \item{bw2}{The bandwidth value for the smoothed cross-covariance function across the direction of sample 2; positive numeric - default: determine automatically based on 'methodBwCov'}

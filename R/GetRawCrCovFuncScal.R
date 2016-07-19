@@ -4,10 +4,10 @@ GetRawCrCovFuncScal <- function(Ly, Lt = NULL, Ymu, Z,  Zmu ){
     ulLt = unlist(Lt)
     if (length(Ymu) != length(unique(ulLt))){
       stop("Ymu and Lt are of the same size.")
-    } else { 
+    } else {
       zstar = Z - Zmu;
-      RCC <- list(tpairn = ulLt, 
-                  rawCCov = rep(zstar, times = unlist( lapply(Ly,  length))) * 
+      RCC <- list(tpairn = ulLt,
+                  rawCCov = rep(zstar, times = unlist( lapply(Ly,  length))) *
                              (unlist(Ly) - approx(x= sort(unique(ulLt)), y = Ymu, xout = ulLt)$y ) )
       return(RCC)
     }
@@ -22,4 +22,3 @@ GetRawCrCovFuncScal <- function(Ly, Lt = NULL, Ymu, Z,  Zmu ){
     stop("It appears you do no refine a valid cross-covariance type.")
   }
 }
-

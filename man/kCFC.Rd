@@ -26,17 +26,17 @@ kCFC(y, t, k = 3, kSeed = 123, maxIter = 125,
 }
 \value{
 A list containing the following fields:
-\item{cluster}{A vector of levels 1:k, indicating the cluster to which each curve is allocated.} 
-\item{fpcaList}{A list with the fpcaObj for each separate cluster.} 
+\item{cluster}{A vector of levels 1:k, indicating the cluster to which each curve is allocated.}
+\item{fpcaList}{A list with the fpcaObj for each separate cluster.}
 \item{iterToConv}{A number indicating how many iterations where required until convergence.}
 }
 \description{
 Functional clustering and identifying substructures of longitudinal data using kCFC.
 }
 \examples{
-data(medfly25) 
+data(medfly25)
 Flies <- MakeFPCAInputs(medfly25$ID, medfly25$Days, medfly25$nEggs)
-kcfcObj <- kCFC(Flies$Ly, Flies$Lt, 
+kcfcObj <- kCFC(Flies$Ly, Flies$Lt,
                  optnsSW = list(methodMuCovEst = 'smooth', userBwCov = 2, FVEthreshold = 0.90),
                  optnsCS = list(methodMuCovEst = 'smooth', userBwCov = 2, FVEthreshold = 0.70))
 }

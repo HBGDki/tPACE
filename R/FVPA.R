@@ -1,5 +1,5 @@
 #' Functional Variance Process Analysis for dense functional data
-#' 
+#'
 #' @param y A list of \emph{n} vectors containing the observed values for each individual. Missing values specified by \code{NA}s are supported for dense case (\code{dataType='dense'}).
 #' @param t A list of \emph{n} vectors containing the observation time points for each individual corresponding to y.
 #' @param q A scalar defining the percentile of the pooled sample residual sample used for adjustment before taking log (default: 0.1).
@@ -7,24 +7,24 @@
 #'
 #'
 #' @return A list containing the following fields:
-#' \item{sigma2}{Variance estimator of the functional variance process.} 
-#' \item{fpcaObjY}{FPCA object for the original data.} 
-#' \item{fpcaObjR}{FPCA object for the functional variance process associated with the original data.} 
-#' 
+#' \item{sigma2}{Variance estimator of the functional variance process.}
+#' \item{fpcaObjY}{FPCA object for the original data.}
+#' \item{fpcaObjR}{FPCA object for the functional variance process associated with the original data.}
+#'
 #' @examples
 #' set.seed(1)
 #' n <- 25
 #' pts <- seq(0, 1, by=0.01)
 #' sampWiener <- Wiener(n, pts)
 #' # Data have to dense for FVPA to be relevant!
-#' sampWiener <- Sparsify(sampWiener, pts, 101) 
+#' sampWiener <- Sparsify(sampWiener, pts, 101)
 #' fvpaObj <- FVPA(sampWiener$Ly, sampWiener$Lt)
 #' @references
 #' \cite{Hans-Georg Mueller, Ulrich Stadtmuller and Fang Yao, "Functional variance processes." Journal of the American Statistical Association 101 (2006): 1007-1018}
 #' @export
 
-FVPA = function(y, t, q= 0.1, optns = list(error=TRUE, FVEthreshold = 0.9)){ 
-  
+FVPA = function(y, t, q= 0.1, optns = list(error=TRUE, FVEthreshold = 0.9)){
+
   if( (q <0) || (1 < q) ){
     warning("The value of 'q' is outside [0,1]; reseting to 0.1.")
   }
@@ -37,20 +37,20 @@ FVPA = function(y, t, q= 0.1, optns = list(error=TRUE, FVEthreshold = 0.9)){
   if(!optns$error){
     stop("FVPA is irrelevant if no error is assumed")
   }
-  
+
   fpcaObjY <- FPCA(y, t, optns)
-  
+
   if( fpcaObjY$optns$dataType != 'Dense' ){
-    
+
     stop(paste0("The data has to be 'Dense' for FVPA to be relevant; the current dataType is : '", fpcaObjY$optns$dataType,"'!") )
   }
-  
+
   yFitted <- fitted(fpcaObjY);
   rawRes = GetVarianceProcess(y, t, yFitted, workGrid = fpcaObjY$workGrid, delta = 0, logarithm = FALSE )
   delta = quantile(unlist(rawRes), q);
   rm(rawRes)
   logRes = GetVarianceProcess(y, t, yFitted, workGrid = fpcaObjY$workGrid, delta = delta, logarithm = TRUE )
-  
+
   fpcaObjR = FPCA(logRes, t, optns);
   return( list( sigma2 = fpcaObjR$sigma2, fpcaObjY = fpcaObjY, fpcaObjR = fpcaObjR))
 }

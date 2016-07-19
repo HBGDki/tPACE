@@ -3,11 +3,11 @@
 
 ######
 # Input:
-######  
+######
 #  ymat: matrix of dense regular functional data
 #  optns: options for FPCA function
 ######
-# Output: 
+# Output:
 ######
 #  a SMC object containing:
 #    - mu: p-dim vector of mean function estimation, i.e. on observed grid
@@ -23,7 +23,7 @@ GetMeanDense <- function(ymat, obsGrid, optns){
   if ( is.null(optns$userMu) ){
     mu = colMeans(ymat, na.rm = TRUE) # use non-missing data only
   } else {
-    mu = spline(optns$userMu$t, optns$userMu$mu, xout= obsGrid)$y;  
+    mu = spline(optns$userMu$t, optns$userMu$mu, xout= obsGrid)$y;
   }
 
   if(any(is.na(mu))){

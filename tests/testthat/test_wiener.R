@@ -1,5 +1,7 @@
 # source('.../Wiener.R')
 
+context("wiener - NEEDS TESTS!")
+
 pts <- seq(0, 1, length=20)
 tmp <- Wiener(50, pts)
 tmp1 <- Sparsify(tmp, pts, c(2, 4, 6))

@@ -9,8 +9,8 @@ CVLwls1D <- function(y, t, kernel, npoly, nder, dataType, kFolds = 5 ){
     y = split(y, myPartition)
     t = split(t, myPartition)
     dataType = 'Sparse';
-  } 
-  
+  }
+
   # Make everything into vectors
   ncohort = length(t);
   tt  = unlist(t);
@@ -19,7 +19,7 @@ CVLwls1D <- function(y, t, kernel, npoly, nder, dataType, kFolds = 5 ){
   yyn = yy[order(tt)];
   ind = ind[order(tt)];
   ttn = sort(tt);
-  
+
   # Get minimum reasonable bandwidth
   a0=ttn[1];
   b0=ttn[length(ttn)];
@@ -33,8 +33,8 @@ CVLwls1D <- function(y, t, kernel, npoly, nder, dataType, kFolds = 5 ){
   if (h0 > rang/4){
     h0 = h0*.75;
     warning(sprintf("Warning: the min bandwith choice is too big, reduce to %f !", (h0)  ))
-  }    
-  
+  }
+
   # Get the candidate bandwidths
   nbw = 11;
   bw = rep(0,nbw-1);
@@ -43,7 +43,7 @@ CVLwls1D <- function(y, t, kernel, npoly, nder, dataType, kFolds = 5 ){
     bw[i]=2.5*rang/n*(n/2.5)^((i-1)/(nbw-1)); # Straight from MATLAB
   }
   bw = bw-min(bw)+h0;
-  
+
   #ave = rep(0, length(t[[1]]));
   #
   #if (dataType == 'Dense'){
@@ -61,29 +61,29 @@ CVLwls1D <- function(y, t, kernel, npoly, nder, dataType, kFolds = 5 ){
     count[j]=0;
     #for (i in 1:ncohort){
     for (i in 1:kFolds){
-      
+
       xout= ttn[ ind %in% theFolds[[i]]];
       obs = yyn[ ind %in% theFolds[[i]]];
       xin = ttn[!ind %in% theFolds[[i]]];
       yin = yyn[!ind %in% theFolds[[i]]];
-      
+
       win=rep(1,length(yin));
-      #win[ind==i] = NA;        
+      #win[ind==i] = NA;
       #if(dataType=='Dense') {
       #  yyn=(ave*ncohort-t[[i]])/(ncohort-1);
       #  ttn=t[[1]];
-      #  win=pracma::ones(1,length(t[[1]]));    
+      #  win=pracma::ones(1,length(t[[1]]));
       #  yyn = yyn[order(ttn)]
-      #  ttn = sort(ttn)           
-      #}  
- 
+      #  ttn = sort(ttn)
+      #}
+
       mu = tryCatch(
-        Lwls1D(bw= bw[j], kernel_type = kernel, npoly=npoly, nder= nder, xin = xin, yin= yin, xout=xout, win = win), 
+        Lwls1D(bw= bw[j], kernel_type = kernel, npoly=npoly, nder= nder, xin = xin, yin= yin, xout=xout, win = win),
         error=function(err) {
         warning('Invalid bandwidth during CV. Try enlarging the window size.')
         return(Inf)
       })
-        
+
       cv[j] = cv[j]+ sum((obs-mu)^2)
       if(is.na(cv[j])){
         cv[j] = Inf;
@@ -96,10 +96,9 @@ CVLwls1D <- function(y, t, kernel, npoly, nder, dataType, kFolds = 5 ){
   if(min(cv) == Inf){
     stop("All bandwidths resulted in infinite CV costs.")
   }
-  
+
   bopt = bw[(cv==min(cv))];
-  
+
   return(bopt)
 
 }
-

@@ -1,21 +1,25 @@
-# setwd('misc/') 
+# setwd('misc/')
 # devtools::load_all()
 # devtools::load_all('../RPACE/tPACE')
 
-library(testthat)
-library(pracma)
+# library(testthat)
+
+context("interp2lin")
+
+require(pracma, quietly = TRUE)
+
 # These check out OK.
-U1 = test_that("basic pracma::interp2 example gives same output ", { 
+U1 = test_that("basic pracma::interp2 example gives same output ", {
 
   x <- linspace(-1, 1, 11)
   y <- linspace(-1, 1, 11)
   mgrid <- meshgrid(x, y)
   Z <- mgrid$X^2 + mgrid$Y^2
   xp <- yp <- linspace(-1, 1, 101)
-  method <- "linear" 
+  method <- "linear"
   AA = interp2(x, y, Z, xp, yp, method)
   BB = interp2lin(x, y, Z, xp, yp)
-  expect_equal(sum(AA), sum(BB), tolerance = 2e-15) 
+  expect_equal(sum(AA), sum(BB), tolerance = 2e-15)
 
 })
 
@@ -98,31 +102,30 @@ U5 = test_that("basic pracma::interp2 example gives same outputs large input gri
   expect_equal(sum(AA), sum(BB), tolerance = 2e-15)
 })
 
-U6 = test_that("basic pracma::interp2 example gives same output on different grid size", { 
+U6 = test_that("basic pracma::interp2 example gives same output on different grid size", {
 
   x <- linspace(-2/3, 2/3, 4)
   y <- linspace(-1, 1, 5)
   Z <- outer(x, y, `+`)
   xp <- linspace(-1/2, 1/2, 4)
   yp <- linspace(-1, 1, 4)
-  method <- "linear" 
+  method <- "linear"
   AA = interp2(x, y, t(Z), xp, yp, method)
   BB = interp2lin(x, y, Z, xp, yp)
-  expect_equal(AA, BB, tolerance = 2e-15) 
+  expect_equal(AA, BB, tolerance = 2e-15)
 
 })
 
-U7 = test_that("basic pracma::interp2 example gives same output on different grid size (large)", { 
+U7 = test_that("basic pracma::interp2 example gives same output on different grid size (large)", {
 
   x <- linspace(-1/2, 1/2, 3)
   y <- linspace(-1, 1, 15)
   Z <- outer(x, y, `*`)
   xp <- linspace(-1/2, 1/2, 11)
   yp <- linspace(-1, 1, 11)
-  method <- "linear" 
+  method <- "linear"
   AA = interp2(x, y, t(Z), xp, yp, method)
   BB = interp2lin(x, y, Z, xp, yp)
-  expect_equal(sum(AA), sum(BB), tolerance = 2e-15) 
+  expect_equal(sum(AA), sum(BB), tolerance = 2e-15)
 
 })
-

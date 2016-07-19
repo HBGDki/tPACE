@@ -1,16 +1,18 @@
 # devtools::load_all()
 #options(error=recover)
-library(testthat)
+# library(testthat)
+
+context("GetCEScores")
 
 # test GetIndCEScores
 obsGrid <- seq(0, 1, by=0.1)
-yVec <- c(1, -1) 
-muVec <- c(0, 0) 
-lamVec <- c(6, 1) 
+yVec <- c(1, -1)
+muVec <- c(0, 0)
+lamVec <- c(6, 1)
 phiMat <- diag(1, 2)
 Sigma_Yi <- diag(10, 2)
 test_that('GetIndCEScores works', {
-  expect_equal(GetIndCEScores(yVec, muVec, lamVec, phiMat, Sigma_Yi)[1:2], 
+  expect_equal(GetIndCEScores(yVec, muVec, lamVec, phiMat, Sigma_Yi)[1:2],
                list(xiEst=matrix(c(0.6, -0.1)), xiVar=diag(c(2.4, 0.9))))
   expect_equal(GetIndCEScores(c(), muVec, lamVec, phiMat, Sigma_Yi)[1:2], # integer(0) is not really an empty vector, 'c()' is more obvious
                list(xiEst=matrix(NA, length(lamVec)), xiVar=matrix(NA, length(lamVec), length(lamVec))))
@@ -63,11 +65,11 @@ test_that('Observations with length 0 produces NA in the xiEst, xiVar, and fitte
   tmp <- GetMuPhiSig(truncSamp$Lt, truncPts, mu1[1:length(truncPts)], phiObs, CovObs + diag(smc1$sigma2, length(truncPts)))
   expect_equal(sapply(tmp, function(x) length(x$muVec)), sapply(truncSamp$Ly, length))
   tmp1 <- GetCEScores(truncSamp$Ly[17:20], truncSamp$Lt[17:20], list(verbose=TRUE), rep(0, length(truncPts)), truncPts, CovObs, eig1$lambda, phiObs, smc1$sigma2)
-  
+
   expect_equal(tmp1[[1, 1]], matrix(NA, length(eig1$lambda)))
   expect_equal(tmp1[[2, 1]], matrix(NA, length(eig1$lambda), length(eig1$lambda)))
   expect_equal(tmp1[[3, 1]], matrix(NA, 0, 0))
-}) 
+})
 
 # Test GetCEScores: compare to Matlab
 test_that('GetCEScores for sparse case matches Matlab', {
@@ -83,7 +85,7 @@ test_that('GetCEScores for sparse case matches Matlab', {
   fittedCov <- phi %*% diag(lambda) %*% t(phi)
   tmp <- GetCEScores(y, t, list(), mu, obsGrid, fittedCov, lambda, phi, sigma2)
 # xiEst are the same
-  expect_equal(t(do.call(cbind, tmp[1, ])), 
+  expect_equal(t(do.call(cbind, tmp[1, ])),
                matrix(c(0.709244942754497,  0.337643678160920,
                         -2.017923270954032, -0.194174757281554,
                         -1.011227267892009, -0.329341317365270), 3, 2,
@@ -95,21 +97,21 @@ test_that('GetCEScores for sparse case matches Matlab', {
                                    -0.504480817738509, 0.951456310679612,
                                    0.341317365269461, 0.155573425829540,
                                    0.155573425829540, 0.281437125748503))
-# fitted Y_i are the same 
+# fitted Y_i are the same
   expect_equal(unlist(tmp[3, ]), c(1.162356321839080,  2.054597701149425, 3.844660194174757, 0.288922155688622, 1.829341317365270, 3.211077844311377))
 })
 
 # # Matlab code:
-# y = cell(1, 3); 
+# y = cell(1, 3);
 # t = y;
-# y{1} = [1, 2]; y{2} = [4]; y{3} = [0, 2, 3]; 
+# y{1} = [1, 2]; y{2} = [4]; y{3} = [0, 2, 3];
 # t{1} = [1.5, 2.5]; t{2} = [2]; t{3} = [1, 1.5, 2.5];
-# # mu = zeros(1, 7); 
-# mu = linspace(0, 3, 7); 
-# out1 = linspace(0, 3, 7); 
-# pts = linspace(0, 1, 7); 
+# # mu = zeros(1, 7);
+# mu = linspace(0, 3, 7);
+# out1 = linspace(0, 3, 7);
+# pts = linspace(0, 1, 7);
 # phi = [sin(2 * pi * pts)', cos(2 * pi * pts)'];
-# lambda = [6, 1]; 
+# lambda = [6, 1];
 # sigma = 0;
 # sigma_new = 0.4;
 # noeig = 2;
@@ -134,22 +136,21 @@ test_that('Noiseless example', {
   M <- 50
   K <- 5
   samp <- MakeGPFunctionalData(n, M, K=K, lambda=2^(-seq(1, K)))
-  # matplot(t(samp$Y[1:10, ])) 
+  # matplot(t(samp$Y[1:10, ]))
   sampList <- MakeFPCAInputs(tVec=samp$pts, yVec=samp$Y)
   resIN <- FPCA(sampList$Ly, sampList$Lt, list(methodXi='IN', lean=TRUE, error=FALSE, rho='no'))
   resCE <- FPCA(sampList$Ly, sampList$Lt, list(methodXi='CE', lean=TRUE, error=FALSE, rho='no'))
-  
+
   expect_gt( abs( cor( samp$xi[,1] , resIN$xiEst[,1])),0.97)
   expect_gt( abs(cor( samp$xi[,2] , resIN$xiEst[,2])),0.97)
   expect_gt( abs(cor( samp$xi[,3] , resIN$xiEst[,3])),0.97)
   expect_gt( abs(cor( samp$xi[,4] , resIN$xiEst[,4])), 0.97)
   expect_gt( abs(cor( samp$xi[,5] , resIN$xiEst[,5])), 0.94)
-   
+
   expect_gt( abs( cor( samp$xi[,1] , resCE$xiEst[,1])),0.97)
   expect_gt( abs(cor( samp$xi[,2] , resCE$xiEst[,2])),0.97)
   expect_gt( abs(cor( samp$xi[,3] , resCE$xiEst[,3])),0.97)
   expect_gt( abs(cor( samp$xi[,4] , resCE$xiEst[,4])), 0.97)
   expect_gt( abs(cor( samp$xi[,5] , resCE$xiEst[,5])), 0.94)
- 
-}) 
 
+})

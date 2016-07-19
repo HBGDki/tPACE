@@ -1,4 +1,6 @@
-cat("\ntests for 'CVLwls1D'")
+# cat("\ntests for 'CVLwls1D'")
+
+context("CVLwls1D")
 
 test_that("basic arguments match MATLAB output ", {
 
@@ -10,4 +12,3 @@ test_that("basic arguments match MATLAB output ", {
 
 }
 )
-

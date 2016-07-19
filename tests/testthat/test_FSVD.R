@@ -1,7 +1,9 @@
 if (Sys.getenv('TRAVIS') != 'true') {# Do not run on travis since this is slow
+
+context("FSVD")
 # devtools::load_all()
-library(testthat)
-library(mvtnorm)
+# library(testthat)
+require(mvtnorm, quietly = TRUE)
 
 ### Simulaiton setting in FSVD paper
 # Generate X, Y functional samples with certain covariance structure
@@ -21,7 +23,7 @@ Psi = cbind(psi1, psi2, psi3)
 CovscX = matrix(c(8,3,-2,3,4,1,-2,1,3), nrow=3)
 CovscY = matrix(c(6,-2,1,-2,4.5,1.5,1,1.5,3.25), nrow=3)
 CovscXY = diag(c(3,1.5,0.5))
-CXY = CovscXY[1,1]*phi1%*%t(psi1) + CovscXY[2,2]*phi2%*%t(psi2) + 
+CXY = CovscXY[1,1]*phi1%*%t(psi1) + CovscXY[2,2]*phi2%*%t(psi2) +
   CovscXY[3,3]*phi3%*%t(psi3)
 rho1 = CovscXY[1,1]/sqrt(CovscX[1,1]*CovscY[1,1])
 rho2 = CovscXY[2,2]/sqrt(CovscX[2,2]*CovscY[2,2])
@@ -45,7 +47,7 @@ test_that('consistent estimates for dense case', {
   Ymat = t(Psi %*% t(singscore[,4:6])) + rnorm(n = n*length(obsGrid),mean = 0,sd = sqrt(sigma2))
   Xins = MakeFPCAInputs(tVec = obsGrid, yVec = Xmat)
   Yins = MakeFPCAInputs(tVec = obsGrid, yVec = Ymat)
-  
+
   Ly1 = Xins$Ly
   Lt1 = Xins$Lt
   Ly2 = Yins$Ly
@@ -59,7 +61,7 @@ test_that('consistent estimates for dense case', {
   expect_gt(abs(cor(fsvdobj$sScores1[,3], singscore[,3])), 0.99)
   expect_gt(abs(cor(fsvdobj$sScores2[,1], singscore[,4])), 0.99)
   expect_gt(abs(cor(fsvdobj$sScores2[,2], singscore[,5])), 0.99)
-  expect_gt(abs(cor(fsvdobj$sScores2[,3], singscore[,6])), 0.99)  
+  expect_gt(abs(cor(fsvdobj$sScores2[,3], singscore[,6])), 0.99)
 })
 
 ### test for consistency in sparse case
@@ -73,12 +75,12 @@ test_that('consistent estimates for sparse case', {
   xi1 = singscore[,4] #Y
   xi2 = singscore[,5] #Y
   xi3 = singscore[,6] #Y
-  
+
   Xmat = t(Phi %*% t(singscore[,1:3])) + rnorm(n = n*length(obsGrid),mean = 0,sd = sqrt(sigma2))
   Ymat = t(Psi %*% t(singscore[,4:6])) + rnorm(n = n*length(obsGrid),mean = 0,sd = sqrt(sigma2))
   XinSparse = Sparsify(samp = Xmat, pts = obsGrid, sparsity = sample(6:10,size=n,replace=TRUE))
   YinSparse = Sparsify(samp = Ymat, pts = obsGrid, sparsity = sample(6:10,size=n,replace=TRUE))
-  
+
   Ly1 = XinSparse$Ly
   Lt1 = XinSparse$Lt
   Ly2 = YinSparse$Ly
@@ -107,12 +109,12 @@ test_that('Check flipping the components in the sparse case results into perfect
   xi1 = singscore[,4] #Y
   xi2 = singscore[,5] #Y
   xi3 = singscore[,6] #Y
-  
+
   Xmat = t(Phi %*% t(singscore[,1:3])) + rnorm(n = n*length(obsGrid),mean = 0,sd = sqrt(sigma2))
   Ymat = t(Psi %*% t(singscore[,4:6])) + rnorm(n = n*length(obsGrid),mean = 0,sd = sqrt(sigma2))
   XinSparse = Sparsify(samp = Xmat, pts = obsGrid, sparsity = sample(6:10,size=n,replace=TRUE))
   YinSparse = Sparsify(samp = Ymat, pts = obsGrid, sparsity = sample(6:10,size=n,replace=TRUE))
-  
+
   Ly1 = XinSparse$Ly
   Lt1 = XinSparse$Lt
   Ly2 = YinSparse$Ly
@@ -128,6 +130,6 @@ test_that('Check flipping the components in the sparse case results into perfect
   expect_lt( (cor(fsvdObj1$sScores1[,3], fsvdObj2$sScores1[,3])), -0.99)
   expect_lt( (cor(fsvdObj1$sScores1[,2], fsvdObj2$sScores1[,2])), -0.99)
   expect_lt( (cor(fsvdObj1$sScores1[,1], fsvdObj2$sScores1[,1])), -0.99)
-  
+
 })
 }

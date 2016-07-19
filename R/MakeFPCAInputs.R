@@ -1,7 +1,7 @@
 #' Format FPCA input
 #'
-#' Turn vector inputs to the list so they can be used in FPCA 
-#' 
+#' Turn vector inputs to the list so they can be used in FPCA
+#'
 #' @param IDs  n-by-1 vector of subject IDs (Default: NULL)
 #' @param tVec Either an n-by-1 vector of measurement times, or a p-by-1 vector corresponding to the common time support
 #' @param yVec n-by-1 vector of measurements from the variable of interest, or a n-by-p matrix with each row corresponding to the dense observations.
@@ -11,14 +11,14 @@
 
 MakeFPCAInputs <- function(IDs = NULL, tVec, yVec, na.rm=FALSE){
 
-  if( !is.null(IDs) ){ 
+  if( !is.null(IDs) ){
     if (na.rm) {
       dat <- na.omit(data.frame(IDs, tVec, yVec))
       IDs <- dat[, 'IDs']
       tVec <- dat[, 'tVec']
       yVec <- dat[, 'yVec']
     }
-    uniqueIDs <- unique(IDs) 
+    uniqueIDs <- unique(IDs)
     Lt <- lapply( uniqueIDs, function(x) tVec[ which(IDs == x)])
     Ly <- lapply( uniqueIDs, function(x) yVec[ which(IDs == x)])
     Lid <- as.list(uniqueIDs)
@@ -34,4 +34,3 @@ MakeFPCAInputs <- function(IDs = NULL, tVec, yVec, na.rm=FALSE){
   return(L)
 
 }
-

@@ -1,5 +1,7 @@
 # devtools::load_all()
 
+context("crea - NEEDS TESTS")
+
 viewPdf <- FALSE
 set.seed(1)
 n <- 100

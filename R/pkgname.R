@@ -1,7 +1,7 @@
 #' PACE: Principal Analysis by Conditional Expectation
 #'
 #' PACE package for Functional Data Analysis and Empirical Dynamics.
-#' 
+#'
 #' PACE is a versatile package that provides implementation of various methods
 #' of Functional Data Analysis (FDA) and Empirical Dynamics. The core of this
 #' package is Functional Principal Component Analysis (FPCA), a key technique
@@ -16,7 +16,7 @@
 #' samples of realized trajectories, and for the analysis of underlying
 #' dynamics.
 #'
-#' 
+#'
 #' @author
 #' Xiongtao Dai \email{dai@@ucdavis.edu},
 #' Pantelis Z. Hadjipantelis \email{pantelis@@ucdavis.edu},
@@ -35,7 +35,7 @@
 #' @importFrom pracma meshgrid midpoint mod ones uniq
 #' @importFrom numDeriv grad hessian
 #' @importFrom grDevices colorRampPalette dev.new palette
-#' @importFrom graphics abline barplot boxplot grid legend lines matlines matplot par plot points polygon 
+#' @importFrom graphics abline barplot boxplot grid legend lines matlines matplot par plot points polygon
 #' @importFrom stats aggregate approx approxfun cov dist fitted kmeans lm median na.omit optim predict quantile rnorm runif spline var sd
 #' @importFrom utils installed.packages
 NULL

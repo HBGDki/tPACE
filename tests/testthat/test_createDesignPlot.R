@@ -1,5 +1,6 @@
-library(testthat)
+# library(testthat)
 # devtools::load_all()
+context("createDesignPlot - NEEDS TESTS")
 
 # Uniform time points
 ## a speed test
@@ -12,7 +13,7 @@ system.time(
 CreateDesignPlot(Lt, obsGrid, isColorPlot=TRUE)
 )
 
-# ... are passed in 
+# ... are passed in
 set.seed(1)
 n <- 5e2
 sparsity <- 1:5

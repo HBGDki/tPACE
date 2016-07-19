@@ -1,11 +1,11 @@
 #' Z-score body-weight for age 0 to 24 months based on WHO standards
 #'
 #' Make vector of age and body-weight to z-scores based on WHO standards using LMS
-#' 
-#' @param sex A character 'M' or 'F' indicating the sex of the child. 
+#'
+#' @param sex A character 'M' or 'F' indicating the sex of the child.
 #' @param age A vector of time points of size Q.
 #' @param bw A vector of body-weight readings of size Q.
-#' 
+#'
 #' @return A vector of Z-scores of size Q.
 #' @export
 MakeBWtoZscore02y <- function(sex, age, bw){
@@ -16,7 +16,7 @@ MakeBWtoZscore02y <- function(sex, age, bw){
   if(!all(  (age <= time[24]) && (time[1] <= age))){
     stop('Age requested is outside the [0,24] months.')
   }
-  
+
   if(sex == 'F'){
     # http://www.who.int/childgrowth/standards/tab_wfa_girls_p_0_5.txt
     sGbw = c( 0.14171, 0.13724, 0.13000, 0.12619, 0.12402, 0.12274, 0.12204, 0.12178, 0.12181, 0.12199, 0.12223,
@@ -28,7 +28,7 @@ MakeBWtoZscore02y <- function(sex, age, bw){
     lGbw = c( 0.3809, 0.1714, 0.0962, 0.0402, -0.0050, -0.0430, -0.0756, -0.1039, -0.1288, -0.1507, -0.1700,
               -0.1872, -0.2024, -0.2158, -0.2278, -0.2384, -0.2478, -0.2562, -0.2637, -0.2703, -0.2762, -0.2815,
               -0.2862, -0.2903, -0.2941)
-    return( ( ((bw/spline(x=time, y = mGbw, xout = age)$y)^(spline(x=time, y = lGbw, xout = age)$y)) -1 ) / 
+    return( ( ((bw/spline(x=time, y = mGbw, xout = age)$y)^(spline(x=time, y = lGbw, xout = age)$y)) -1 ) /
               (spline(x=time, y = sGbw, xout = age)$y * spline(x=time, y = lGbw, xout = age)$y) )
   } else if(sex == 'M'){
     # http://www.who.int/childgrowth/standards/tab_wfa_boys_p_0_5.txt
@@ -41,7 +41,7 @@ MakeBWtoZscore02y <- function(sex, age, bw){
     lBbw = c(0.3487, 0.2297, 0.1970, 0.1738, 0.1553, 0.1395, 0.1257, 0.1134, 0.1021, 0.0917, 0.0820,
              0.0730, 0.0644, 0.0563, 0.0487, 0.0413, 0.0343, 0.0275, 0.0211, 0.0148, 0.0087, 0.0029,
              -0.0028, -0.0083,-0.0137)
-    return( ( ((bw/spline(x=time, y = mBbw, xout = age)$y)^(spline(x=time, y = lBbw, xout = age)$y)) -1 ) / 
+    return( ( ((bw/spline(x=time, y = mBbw, xout = age)$y)^(spline(x=time, y = lBbw, xout = age)$y)) -1 ) /
               (spline(x=time, y = sBbw, xout = age)$y * spline(x=time, y = lBbw, xout = age)$y) )
   } else{
     stop("Sex type undefined.")

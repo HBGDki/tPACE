@@ -3,6 +3,8 @@ library(testthat)
 
 # GMeanAndGCV
 
+context("BinRawCov")
+
 set.seed(1)
 pts <- c(0, 1, 3:100) / 100
 regGrid <- seq(0, 1, by=0.1)
@@ -19,9 +21,9 @@ test_that('BinRawCov works', {
   brcov <- BinRawCov(rcov)
   expect_equal(brcov$tPairs, matrix(c(1, 1, 2, 1, 1, 2, 2, 2), ncol=2, byrow=TRUE))
   expect_equal(brcov$meanVals, c(1, 2.5, 6, 4))
-  
+
   rcov <- list(tPairs=tPairs, cxxn=1:nrow(tPairs), error=TRUE)
   brcov <- BinRawCov(rcov)
   expect_equal(brcov$tPairs, matrix(c(1, 1, 2, 1, 1, 2, 2, 2), ncol=2, byrow=TRUE))
-  expect_equal(brcov$meanVals, c(1, 2.5, 6, 4))  
+  expect_equal(brcov$meanVals, c(1, 2.5, 6, 4))
 })

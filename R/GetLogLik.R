@@ -22,9 +22,9 @@ GetLogLik = function(fpcaObj, K, Ly = NULL, Lt = NULL){
   if(fpcaObj$optns$dataType %in% c('Dense'
     #, 'DenseWithMV' # need extra imputation step
     )){
-  	if(K == 1){
-  	  Sigma_y = phi %*% (lambda*diag(K)) %*% t(phi) + sigma2*diag(rep(1,nrow(phi)))
-  	} else {
+    if(K == 1){
+      Sigma_y = phi %*% (lambda*diag(K)) %*% t(phi) + sigma2*diag(rep(1,nrow(phi)))
+    } else {
       Sigma_y = phi %*% diag(lambda) %*% t(phi) + sigma2*diag(rep(1,nrow(phi)))
     }
     detSigma_y = prod(c(lambda,rep(0,nrow(phi)-K))[1:length(lambda)]+sigma2)
@@ -37,7 +37,7 @@ GetLogLik = function(fpcaObj, K, Ly = NULL, Lt = NULL){
     ymatcenter = matrix(unlist(Ly)-fpcaObj$mu, nrow = length(Ly), byrow = TRUE)
     svd_Sigma_y = svd(Sigma_y)
     Sigma_y_inv = svd_Sigma_y$v %*% diag(1/svd_Sigma_y$d) %*% t(svd_Sigma_y$u)
-  	logLik = sum(diag(t(Sigma_y_inv %*% t(ymatcenter)) %*% t(ymatcenter))) + length(Ly)*log(detSigma_y)
+    logLik = sum(diag(t(Sigma_y_inv %*% t(ymatcenter)) %*% t(ymatcenter))) + length(Ly)*log(detSigma_y)
     return(logLik)
   } else { # Sparse case
     if(is.null(sigma2)){ sigma2 <- fpcaObj$rho }
@@ -48,7 +48,7 @@ GetLogLik = function(fpcaObj, K, Ly = NULL, Lt = NULL){
     for(i in 1:length(Ly)){
       if(length(Lt[[i]]) == 1){
         phi_i = t(as.matrix(ConvertSupport(fromGrid = fpcaObj$workGrid, toGrid = Lt[[i]],
-                               phi = phi)))        
+                               phi = phi)))
       } else {
         phi_i = ConvertSupport(fromGrid = fpcaObj$workGrid, toGrid = Lt[[i]],
                                phi = phi)
