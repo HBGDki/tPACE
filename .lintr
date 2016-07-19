@@ -1,5 +1,21 @@
 cache_directory: ".lintr_cache"
 linters: with_defaults(
+    camel_case_linter = NULL, # 5091
+    infix_spaces_linter = NULL, # 2825
+    commas_linter = NULL, # 1759
+    single_quotes_linter = NULL, # 1523
+    assignment_linter = NULL, # 1410
+    line_length_linter = NULL, # 1078
+    spaces_left_parentheses_linter = NULL, # 534
+    commented_code_linter = NULL, # 463
+    trailing_whitespace_linter = NULL, # 241
+    spaces_inside_linter = NULL, # 178
+    open_curly_linter = NULL, # 111
+    object_usage_linter = NULL, # 26
+    closed_curly_linter = NULL, # 21
+    no_tab_linter = NULL, # 4
+    absolute_paths_linter = NULL, # 3
+    trailing_blank_lines_linter = NULL, # 3
     NULL
   )
 exclusions:
