@@ -5,11 +5,11 @@ CreateBasis <- function(K, pts=seq(0, 1, length.out=50), type='sin') {
   nGrid <- length(pts)
   possibleTypes <- c('cos', 'sin', 'fourier', 'unknown')
   type <- possibleTypes[pmatch(type, possibleTypes, nomatch=length(possibleTypes))]
-  
+
   stopifnot(is.numeric(K) && length(K) == 1 && K > 0)
-  
+
   if (type == 'cos') {
-    sapply(seq_len(K), function(k) 
+    sapply(seq_len(K), function(k)
       if (k == 1) {
         rep(1, nGrid)
       } else {
@@ -19,7 +19,7 @@ CreateBasis <- function(K, pts=seq(0, 1, length.out=50), type='sin') {
   } else if (type == 'sin') {
     sapply(seq_len(K), function(k) sqrt(2) * sin(k * pi * pts))
   } else if (type == 'fourier') {
-    sapply(seq_len(K), function(k) 
+    sapply(seq_len(K), function(k)
       if (k == 1) {
         rep(1, nGrid)
       } else if (k %% 2 == 0) {

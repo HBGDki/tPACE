@@ -33,7 +33,7 @@ SelectK = function(fpcaObj, criterion = 'FVE', FVEthreshold = 0.95, Ly = NULL, L
       stop('Invalid selection criterion. Need to be one of "FVE", "AIC", "BIC" or a positive integer!')
     }
   }
-  
+
   if(criterion %in% c('AIC','BIC')) {
     if(fpcaObj$optns$lean == TRUE && (is.null(Ly) || is.null(Lt))){
     stop("Option lean is TRUE, need input data Ly and measurement time list Lt to calculate log-likelihood.")
@@ -80,7 +80,7 @@ SelectK = function(fpcaObj, criterion = 'FVE', FVEthreshold = 0.95, Ly = NULL, L
   } else {
     stop('Unknown criterion!')
   }
-  
+
   # For compatibility reason, k is also returned.
-  return(list(K=K, criterion=criterion, k=K)) 
+  return(list(K=K, criterion=criterion, k=K))
 }

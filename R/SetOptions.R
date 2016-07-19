@@ -11,43 +11,43 @@
 SetOptions = function(y, t, optns){
 
   methodMuCovEst = optns[['methodMuCovEst']]
-  userBwMu =optns[['userBwMu']];                
-  methodBwMu =optns[['methodBwMu']]; 
-  userBwCov =optns[['userBwCov']];            
+  userBwMu =optns[['userBwMu']];
+  methodBwMu =optns[['methodBwMu']];
+  userBwCov =optns[['userBwCov']];
   methodBwCov =optns[['methodBwCov']];
   kFoldMuCov = optns[['kFoldMuCov']]
-  methodSelectK =optns[['methodSelectK']];  
+  methodSelectK =optns[['methodSelectK']];
   FVEthreshold =optns[['FVEthreshold']];
   fitEigenValues <- optns[['fitEigenValues']];
-  maxK =optns[['maxK']];                
-  dataType =optns[['dataType']];          
+  maxK =optns[['maxK']];
+  dataType =optns[['dataType']];
   error =optns[['error']];
-  nRegGrid =optns[['nRegGrid']];              
+  nRegGrid =optns[['nRegGrid']];
   methodXi =optns[['methodXi']];
   shrink =optns[['shrink']]
-  kernel =optns[['kernel']];            
+  kernel =optns[['kernel']];
   numBins =optns[['numBins']];
   yname =optns[['yname']];
-  rho =optns[['rho']];                
+  rho =optns[['rho']];
   diagnosticsPlot =optns[['diagnosticsPlot']];
-  verbose =optns[['verbose']];   
-  userMu =optns[['userMu']];                  
+  verbose =optns[['verbose']];
+  userMu =optns[['userMu']];
   #methodMu =optns[['methodMu']];
-  outPercent =optns[['outPercent']];  
+  outPercent =optns[['outPercent']];
   userCov =optns[['userCov']];
   userSigma2 = optns[['userSigma2']]
-  rotationCut =optns[['rotationCut']];    
+  rotationCut =optns[['rotationCut']];
   useBinnedData =optns[['useBinnedData']];
   useBinnedCov = optns[['useBinnedCov']]
   lean = optns[['lean']]
 
   if(is.null(methodBwMu)){ # bandwidth choice for mean function is GCV if userBwMu = 0
-    #methodBwMu = 'GMeanAndGCV';  
+    #methodBwMu = 'GMeanAndGCV';
     methodBwMu = 'Default'
   }
   if(is.null(userBwMu) && methodBwMu == 'Default'){ # bandwidth choice for mean function is using CV or GCV
-    userBwMu = 0.05 * diff(range(unlist(t)));   
-  } 
+    userBwMu = 0.05 * diff(range(unlist(t)));
+  }
   if(is.null(userBwMu) && methodBwMu != 'Default'){
     userBwMu = 0.0;
   }
@@ -56,12 +56,12 @@ SetOptions = function(y, t, optns){
     methodBwCov = 'Default';
   }
   if(is.null(userBwCov) && methodBwCov == 'Default'){ # bandwidth choice for covariance function is CV or GCV
-    userBwCov = 0.10 * diff(range(unlist(t))); 
+    userBwCov = 0.10 * diff(range(unlist(t)));
   }
   if(is.null(userBwCov) && methodBwCov != 'Default'){
     userBwCov = 0.0;
   }
-  #if(is.null(ngrid1)){ # number of support points for the covariance surface 
+  #if(is.null(ngrid1)){ # number of support points for the covariance surface
   #  ngrid1 = 30;
   #}
   if (is.null(kFoldMuCov)) { # CV fold for covariance smoothing
@@ -78,7 +78,7 @@ SetOptions = function(y, t, optns){
      FVEthreshold = 0.9999;
   }
   if(is.null(dataType)){ #do we have dataType or sparse functional data
-    dataType = IsRegular(t);    
+    dataType = IsRegular(t);
   }
   if (is.null(fitEigenValues)) {
     fitEigenValues <- FALSE
@@ -94,27 +94,27 @@ SetOptions = function(y, t, optns){
     stop('Fit method only apply to sparse data')
   }
   if(is.null(error)){ # error assumption with measurement error
-      error = TRUE;    
+      error = TRUE;
   }
-  if(is.null(nRegGrid)){ # number of support points in each direction of covariance surface 
+  if(is.null(nRegGrid)){ # number of support points in each direction of covariance surface
     if(dataType == 'Dense' || dataType == 'DenseWithMV'){
       tt = unlist(t)
       nRegGrid = length(unique(signif(tt[!is.na(tt)],6)));
     } else { # for Sparse and p>>n
       nRegGrid = 51;
-    }    
+    }
   }
   if(is.null(maxK)){ # maximum number of principal components to consider
-    maxK = min( nRegGrid-2, length(y)-2);   
+    maxK = min( nRegGrid-2, length(y)-2);
     if(methodMuCovEst == 'smooth'){
-      maxK = min( maxK, 20) 
+      maxK = min( maxK, 20)
     }
   }
   methodNames = c("IN", "CE");
   if(!is.null(methodXi) && !(methodXi %in% methodNames)){
-    message(paste('methodXi', methodXi, 'is unrecognizable! Reset to automatic selection now!\n')); 
-    methodXi = NULL; 
-  }   
+    message(paste('methodXi', methodXi, 'is unrecognizable! Reset to automatic selection now!\n'));
+    methodXi = NULL;
+  }
   if(is.null(methodXi)){ # method to estimate the PC scores
     if(dataType == 'Dense'){
       methodXi = "IN";
@@ -126,15 +126,15 @@ SetOptions = function(y, t, optns){
       methodXi = "IN";
     }
   }
-   if(is.null(shrink)){ 
+   if(is.null(shrink)){
      # apply shrinkage to estimates of random coefficients (dataType data
      # only)
      shrink = FALSE;
    }
-   if(shrink == TRUE && (error != TRUE || methodXi != "IN")){ 
+   if(shrink == TRUE && (error != TRUE || methodXi != "IN")){
      # Check for valid shrinkage choice
      message('shrinkage method only has effects when methodXi = "IN" and error = TRUE! Reset to shrink = FALSE now!\n');
-     shrink = FALSE      
+     shrink = FALSE
    }
   if(is.null(kernel)){ # smoothing kernel choice
     if(dataType == "Dense"){
@@ -145,9 +145,9 @@ SetOptions = function(y, t, optns){
   }
   kernNames = c("rect", "gauss", "epan", "gausvar", "quar");
   if(!(kernel %in% kernNames)){ # Check suitability of kernel
-    message(paste('kernel', kernel, 'is unrecognizable! Reset to automatic selection now!\n')); 
-    kernel = NULL; 
-  }  
+    message(paste('kernel', kernel, 'is unrecognizable! Reset to automatic selection now!\n'));
+    kernel = NULL;
+  }
   if(is.null(kernel)){ # smoothing kernel choice
     if(dataType %in% c( "Dense", "DenseWithMV")){
       kernel = "epan";   # kernel: Epanechnikov
@@ -156,7 +156,7 @@ SetOptions = function(y, t, optns){
     }
   }
   if(is.null(yname)){ # name of the variable analysed
-    yname = as.character(substitute(y))      
+    yname = as.character(substitute(y))
   }
   if(maxK > (nRegGrid-2)){ # check if a reasonable number of eigenfunctions is requested
     message(paste("maxK can only be less than or equal to", nRegGrid-2,"! Reset to be", nRegGrid-2, "now!\n"));
@@ -178,7 +178,7 @@ SetOptions = function(y, t, optns){
   }
   if(is.null(rho)){ # truncation threshold for the iterative residual that is used
     # no regularization if sigma2 is specified or assume no measurement error.
-    if (!is.null(userSigma2) || error == FALSE) { 
+    if (!is.null(userSigma2) || error == FALSE) {
       rho <- 'no'
     } else {
       rho <- 'cv'
@@ -186,50 +186,50 @@ SetOptions = function(y, t, optns){
   }
   if(is.null(verbose)){ # display diagnostic messages
     verbose = FALSE;
-  }  
+  }
   if(is.null(userMu)){ # user-defined mean functions valued at distinct input time points
     userMu <- NULL
   }
   if(is.null(userCov)){
     userCov <- NULL
   }
-  if(is.null(outPercent)){ 
+  if(is.null(outPercent)){
     outPercent <- c(0,1)
-  }  
-  if(is.null(rotationCut)){ 
+  }
+  if(is.null(rotationCut)){
     rotationCut <- c(0.25,.75)
-  } 
+  }
   # if(error == FALSE && (methodSelectK == "AIC" || methodSelectK == "BIC")){ # Check suitability of information criterion
   #  message(paste0('When assume no measurement error, cannot use "AIC" or "BIC". Reset to "BIC" now!\n'))
-  #  methodSelectK = "BIC" 
+  #  methodSelectK = "BIC"
   #}
-  if(!is.null(numBins)){ 
+  if(!is.null(numBins)){
     if(numBins < 10){   # Check suitability of number of bins
       message("Number of bins must be at least +10!!\n");
       numBins = NULL;
     }
   }
-  if(is.null(useBinnedData)){ 
+  if(is.null(useBinnedData)){
     useBinnedData = 'AUTO';
   }
   if (is.null(useBinnedCov)) {
     useBinnedCov <- TRUE
     if (  ( 128 > length(y) ) && ( 3 > mean ( unlist( lapply( y, length) ) ) )){
       useBinnedCov <- FALSE
-    } 
+    }
   }
-  if(is.null(lean)){ 
+  if(is.null(lean)){
     lean = FALSE;
   }
   # if (!all.equal(outPercent, c(0, 1)) && methodMuCovEst == 'cross-sectional') {
     # stop('outPercent not supported for cross-sectional covariance estimate')
   # }
-    
+
   retOptns <- list(userBwMu = userBwMu, methodBwMu = methodBwMu, userBwCov = userBwCov, methodBwCov = methodBwCov,
           kFoldMuCov = kFoldMuCov, methodSelectK = methodSelectK, FVEthreshold = FVEthreshold,
           fitEigenValues = fitEigenValues, maxK = maxK, dataType = dataType, error = error, shrink = shrink,
-          nRegGrid = nRegGrid, rotationCut = rotationCut, methodXi = methodXi, kernel = kernel, 
-          lean = lean, diagnosticsPlot = diagnosticsPlot, numBins = numBins, useBinnedCov = useBinnedCov, 
+          nRegGrid = nRegGrid, rotationCut = rotationCut, methodXi = methodXi, kernel = kernel,
+          lean = lean, diagnosticsPlot = diagnosticsPlot, numBins = numBins, useBinnedCov = useBinnedCov,
           yname = yname,  rho = rho, verbose = verbose, userMu = userMu, userCov = userCov, methodMuCovEst = methodMuCovEst,
           userSigma2 = userSigma2, outPercent = outPercent, useBinnedData = useBinnedData)
 

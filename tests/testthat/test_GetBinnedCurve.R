@@ -27,9 +27,3 @@ test_that('GetBinnedCurve() works for large case',{
  expect_equal(  sd(A$newy), 1.155276018617079e+03)
  expect_equal(  sd(A$midpoint), 5.774934350276200e+02)
 })
-
-
-
-
-
-

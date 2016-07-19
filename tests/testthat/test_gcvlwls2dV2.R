@@ -4,7 +4,7 @@ library(testthat)
 
 try(silent = TRUE, load(system.file('testdata', 'dataForGetRawCov.RData', package='fdapace')))
 # try(silent = TRUE, load(system.file('testdata', 'dataForGetRawCov.RData', package='fdapace')))
-rcov <- GetRawCov(y,t, sort(unlist(t)), mu,'Sparse',FALSE) 
+rcov <- GetRawCov(y,t, sort(unlist(t)), mu,'Sparse',FALSE)
 r <- range(sort(unlist(t)))
 regGrid <- seq(r[1], r[2], length.out=101)
 tmp <- GCVLwls2DV2(sort(unlist(t)), regGrid, kern='epan', rcov=rcov, t=t)   ## Why is this guy outside a test?
@@ -31,7 +31,7 @@ test_that('Binning works for GCV', {
 })
 
 
-## Test CV 
+## Test CV
 test_that('getCVscoresV2 works for binning', {
   set.seed(1)
   pts <- seq(0, 1, by=0.05)
@@ -60,9 +60,9 @@ test_that('GCV is closed to CV', {
 })
 
 
-## HOLE example. Test whether the smoother can handle degenerate cases (in the local window all points lie on a line). 
+## HOLE example. Test whether the smoother can handle degenerate cases (in the local window all points lie on a line).
 
-test_that('GCV will avoid spitting out bandwidth that results in degenerate windows', 
+test_that('GCV will avoid spitting out bandwidth that results in degenerate windows',
 {
   set.seed(2)
   n <- 20
@@ -74,7 +74,7 @@ test_that('GCV will avoid spitting out bandwidth that results in degenerate wind
     samp4$Ly[[i]] <- samp4$Ly[[i]][retain]
     samp4$Lt[[i]] <- samp4$Lt[[i]][retain]
   }
-  
+
   # CreateDesignPlot(samp4$Lt, pts, TRUE, FALSE, 'samp3')
 
   rcov4 <- GetRawCov(samp4$Ly, samp4$Lt, pts, rep(0, length(pts)), 'Sparse', error=FALSE)
@@ -89,4 +89,3 @@ test_that('GCV will avoid spitting out bandwidth that results in degenerate wind
 # samp3$Ly <- lapply(samp3$Ly, matrix, nrow=1)
 # R.matlab::writeMat('samp3.mat', y=samp3$Ly, t=samp3$Lt)
 # GCV values matches matlab, but procedures for optimal GCV BW choice are different.
-

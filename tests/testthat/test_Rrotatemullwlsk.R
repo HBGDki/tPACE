@@ -7,12 +7,12 @@ library(testthat)
 try( silent=TRUE, load(system.file('testdata', 'InputForRotatedMllwlskInCpp.RData', package='fdapace')))
 try( silent=TRUE, load(system.file('testdata', 'InputForRotatedMllwlskInCpp.RData', package='fdapace')))
 
-# tolerance is relatively large because we cannot control of 2500 * 1e-16 anyway 
+# tolerance is relatively large because we cannot control of 2500 * 1e-16 anyway
 # I have already tried using .inverse instead of LLT for the solution and that
 # did not make a difference numericallly (small systems anyway)
 
-U = test_that("basic Epanetchnikov kernel inputs match MATLAB output for different bandwidths", { 
-  
+U = test_that("basic Epanetchnikov kernel inputs match MATLAB output for different bandwidths", {
+
   AA = Rrotatedmullwlsk(bw =IN$bw, tPairs=IN$tPairs, cxxn= IN$cxxn, win= IN$win, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= IN$kernel, bwCheck = FALSE)
   BB = Rrotatedmullwlsk(bw = c(3,4), tPairs=(IN$tPairs), cxxn= IN$cxxn, win= IN$win, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= IN$kernel, bwCheck = FALSE)
   CC = Rrotatedmullwlsk(bw = c(13,23.3), tPairs=(IN$tPairs), cxxn= IN$cxxn, win= IN$win, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= IN$kernel, bwCheck = FALSE)
@@ -20,9 +20,9 @@ U = test_that("basic Epanetchnikov kernel inputs match MATLAB output for differe
   expect_equal(sum(AA), -1.887451898050793, tolerance = 1e-13,scale = 1)
   expect_equal(sum(BB), -3.264859562745997, tolerance = 1e-11,scale = 1)
   expect_equal(sum(CC), -5.650324984396344, tolerance = 1e-13,scale = 1)
-}) 
+})
 
-V = test_that("basic rectangular kernel inputs match MATLAB output for different bandwidths", { 
+V = test_that("basic rectangular kernel inputs match MATLAB output for different bandwidths", {
 
   AA = Rrotatedmullwlsk(bw =IN$bw, tPairs=IN$tPairs, cxxn= IN$cxxn, win= IN$win, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= 'rect', bwCheck = FALSE)
   BB = Rrotatedmullwlsk(bw = c(3,4), tPairs=(IN$tPairs), cxxn= IN$cxxn, win= IN$win, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= 'rect', bwCheck = FALSE)
@@ -63,7 +63,7 @@ Ft = test_that("basic quartic kernel inputs match MATLAB output for different ba
 
 # These check out OK.
 G = test_that("basic gausvar kernel inputs match MATLAB output for different bandwidths", {
- 
+
   AA = Rrotatedmullwlsk(bw =IN$bw, tPairs=IN$tPairs, cxxn= IN$cxxn, win= IN$win, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= 'gausvar', bwCheck = FALSE)
   BB = Rrotatedmullwlsk(bw = c(3,4), tPairs=(IN$tPairs), cxxn= IN$cxxn, win= IN$win, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= 'gausvar', bwCheck = FALSE)
   CC = Rrotatedmullwlsk(bw = c(13,23.3), tPairs=(IN$tPairs), cxxn= IN$cxxn, win= IN$win, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= 'gausvar', bwCheck = FALSE)
@@ -88,7 +88,7 @@ S = test_that("strictly positive window weights inputs match MATLAB output for d
   expect_equal(sum(CC), -1.791956888763226, tolerance = 1e-13,scale = 1)
   expect_equal(sum(DD), -3.614424355861832, tolerance = 1e-13,scale = 1)
   expect_equal(sum(EE), -5.450343839504677, tolerance = 1e-13,scale = 1)
- 
+
 })
 
 
@@ -108,10 +108,10 @@ Y = test_that("Small bandwidths give correct error", {
 
   expect_equal( as.numeric( Rrotatedmullwlsk(bw =c(0.3,0.4), tPairs=IN$tPairs, cxxn= IN$cxxn, win= sin(seq(1,38))+3, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= 'rect', bwCheck = TRUE)), 0)
   expect_equal( as.numeric( Rrotatedmullwlsk(bw =c(9.3,9.4), tPairs=IN$tPairs, cxxn= IN$cxxn, win= sin(seq(1,38))+3, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= 'rect', bwCheck = TRUE)), 1)
-  
+
   expect_equal( as.numeric( Rrotatedmullwlsk(bw =c(0.3,0.4), tPairs=IN$tPairs, cxxn= IN$cxxn, win= sin(seq(1,38))+3, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= 'rect', bwCheck = 1)), 0)
   expect_equal( as.numeric( Rrotatedmullwlsk(bw =c(9.3,9.4), tPairs=IN$tPairs, cxxn= IN$cxxn, win= sin(seq(1,38))+3, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= 'rect', bwCheck = 1)), 1)
-  
+
  #  expect_equal( as.numeric( Rrotatedmullwlsk(bw =c(0.3,0.4), tPairs=IN$tPairs, cxxn= IN$cxxn, win= sin(seq(1,38))+3, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= 'rect', bwCheck = 0)), 0)
  #  expect_equal( as.numeric( Rrotatedmullwlsk(bw =c(0.3,0.4), tPairs=IN$tPairs, cxxn= IN$cxxn, win= sin(seq(1,38))+3, xygrid=IN$xygrid, npoly=IN$npoly, kernel_type= 'rect', bwCheck = FALSE)), 0)
 
@@ -121,4 +121,3 @@ Y = test_that("Small bandwidths give correct error", {
 
 
 })
-

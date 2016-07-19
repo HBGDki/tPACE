@@ -29,7 +29,7 @@ test_that('error == FALSE works', {
   # CreatePathPlot(res4Err, 11:15)
   # CreatePathPlot(res4NE, 11:15)
   expect_equal(res4NE$sigma2, NULL)
-  expect_true(mean((fitted(res4NE) - sampDense)^2) > 
+  expect_true(mean((fitted(res4NE) - sampDense)^2) >
               mean((fitted(res4Err) - sampDense)^2))
 })
 
@@ -67,7 +67,7 @@ test_that('Missing values work for FPCA Wiener process', {
 
   samp4$Ly[[2]] <- samp4$Lt[[2]] <- c(0.1, 0.2, 0.5)
   set.seed(1); res4 <- FPCA(samp4$Ly, samp4$Lt, pNoTrunc)
-  
+
   samp4$Ly[[2]] <- c(NA, 0.2, 0.5)
   set.seed(1); res4NaN <- FPCA(samp4$Ly, samp4$Lt, pNoTrunc)
 
@@ -86,12 +86,12 @@ test_that('Missing values work for FPCA Wiener process', {
 test_that('User provided mu and cov for simple example',{
 
   set.seed(123)
-  N = 200;   
+  N = 200;
   M = 100;
-  
+
   # Define the continuum
   s = seq(0,10,length.out = M)
- 
+
   # Define the mean and 2 eigencomponents
   meanFunct <- function(s) s  + 10*exp(-(s-5)^2)
   eigFunct1 <- function(s) +cos(2*s*pi/10) / sqrt(5)
@@ -99,28 +99,28 @@ test_that('User provided mu and cov for simple example',{
   ef <- matrix(c(eigFunct1(s),eigFunct2(s)), ncol=2)
   ev <- c(5, 2)^2
   covTrue <- ef %*% diag(ev) %*% t(ef)
-  
+
   # Create FPC scores
   Ksi = matrix(rnorm(N*2), ncol=2);
   Ksi = apply(Ksi, 2, scale)
   Ksi = Ksi %*% diag(sqrt(ev))
- 
+
   # Create Y_true
   yTrue = Ksi %*% t(ef) + t(matrix(rep(meanFunct(s),N), nrow=M))
-  
-  # Create sparse sample  
+
+  # Create sparse sample
   # Each subject has one to five readings (median: 3);
   ySparse = Sparsify(yTrue, s, c(2:5))
-    
-  # Give your sample a bit of noise 
-  ySparse$yNoisy = lapply( ySparse$Ly, function(x) x +  1 * rnorm(length(x))) 
-  
+
+  # Give your sample a bit of noise
+  ySparse$yNoisy = lapply( ySparse$Ly, function(x) x +  1 * rnorm(length(x)))
+
   # Do FPCA on this sparse sample
-  FPCAsparseA = FPCA(ySparse$yNoisy,ySparse$Lt, optns = 
+  FPCAsparseA = FPCA(ySparse$yNoisy,ySparse$Lt, optns =
                     list(userMu = list(t=s,mu= meanFunct(s)), userCov = list(t=s,cov= covTrue) ))
-  
+
   expect_equal(FPCAsparseA$sigma2, 1, tolerance=0.1)
-  expect_equal( spline(y = FPCAsparseA$mu, x = FPCAsparseA$workGrid, xout = FPCAsparseA$obsGrid)$y, 
+  expect_equal( spline(y = FPCAsparseA$mu, x = FPCAsparseA$workGrid, xout = FPCAsparseA$obsGrid)$y,
                 expected = meanFunct(s), tolerance = 1e-3)
   expect_equal( FPCAsparseA$lambda, expected=ev, tolerance = 1e-1)
   expect_equal( abs(cor( FPCAsparseA$xiEst[,1], Ksi[,1])) > 0.9, TRUE)
@@ -129,37 +129,37 @@ test_that('User provided mu and cov for simple example',{
 test_that('User provided mu, cov, and sigma2',{
 
   set.seed(123)
-  N = 200;   
+  N = 200;
   M = 90;
-  
+
   # Define the continuum
   s = seq(0,10,length.out = M)
- 
+
   # Define the mean and 2 eigencomponents
   meanFunct <- function(s) s  + 10*exp(-(s-5)^2)
   eigFunct1 <- function(s) +cos(2*s*pi/10) / sqrt(5)
   eigFunct2 <- function(s) -sin(2*s*pi/10) / sqrt(5)
-  
+
   # Create FPC scores
   Ksi = matrix(rnorm(N*2), ncol=2);
   Ksi = apply(Ksi, 2, scale)
   Ksi = Ksi %*% diag(c(5,2))
- 
+
   # Create Y_true
   yTrue = Ksi %*% t(matrix(c(eigFunct1(s),eigFunct2(s)), ncol=2)) + t(matrix(rep(meanFunct(s),N), nrow=M))
-  
-  # Create sparse sample  
+
+  # Create sparse sample
   # Each subject has one to five readings (median: 3);
   ySparse = Sparsify(yTrue, s, c(2:5))
-    
-  # Give your sample a bit of noise 
-  ySparse$yNoisy = lapply( ySparse$Ly, function(x) x +  0.025*rnorm(length(x))) 
-  
+
+  # Give your sample a bit of noise
+  ySparse$yNoisy = lapply( ySparse$Ly, function(x) x +  0.025*rnorm(length(x)))
+
   userSigma2 <- 0.1
   # Do FPCA on this sparse sample
-  FPCAsparseA = FPCA(ySparse$yNoisy,ySparse$Lt, optns = 
+  FPCAsparseA = FPCA(ySparse$yNoisy,ySparse$Lt, optns =
                     list(userMu = list(t=s,mu= meanFunct(s)), userSigma2=0.1 ))
-    
+
   expect_equal( FPCAsparseA$sigma2, userSigma2)
   expect_equal( sqrt(FPCAsparseA$lambda[1:2]), expected=c(5,2), tolerance = 1e-1)
   expect_equal( abs(cor( FPCAsparseA$xiEst[,1], Ksi[,1])) > 0.95, TRUE)
@@ -169,29 +169,29 @@ test_that('User provided mu, cov, and sigma2',{
 test_that('Case where one component should be returned',{
 
   set.seed(123)
-  N = 111;   
+  N = 111;
   M = 81;
-  
+
   # Define the continuum
   s = seq(0,10,length.out = M)
- 
+
   # Define the mean and 2 eigencomponents
-  meanFunct <- function(s) s  + 1 
+  meanFunct <- function(s) s  + 1
   eigFunct1 <- function(s) +cos(2*s*pi/10) / sqrt(5)
   eigFunct2 <- function(s) -sin(2*s*pi/10) / sqrt(5)
-  
+
   # Create FPC scores
   Ksi = matrix(rnorm(N*2), ncol=2);
   Ksi = apply(Ksi, 2, scale)
   Ksi = Ksi %*% diag(c(5,2))
- 
+
   # Create Y_true
   yTrue = Ksi %*% t(matrix(c(eigFunct1(s),eigFunct2(s)), ncol=2)) + t(matrix(rep(meanFunct(s),N), nrow=M))
- 
-  # Create sparse sample  
+
+  # Create sparse sample
   # Each subject has one to five readings (median: 3);
-  ySparse = Sparsify(yTrue, s, c(1:5))    
-  FPCAsparseA = FPCA(ySparse$Ly,ySparse$Lt, optns = 
+  ySparse = Sparsify(yTrue, s, c(1:5))
+  FPCAsparseA = FPCA(ySparse$Ly,ySparse$Lt, optns =
     list( FVEthreshold = 0.4, userMu = list(t=s,mu= meanFunct(s)) ) )
 
   expect_equal(spline(y = FPCAsparseA$mu, x = FPCAsparseA$workGrid, xout = FPCAsparseA$obsGrid)$y,
@@ -217,7 +217,7 @@ test_that('GetCovDense with noise, get sigma2', {
 
   expect_equal(resErr$sigma2, sigma2, tolerance=1e-1)
 # shrinkage should be a bit better
-  expect_true(mean((fitted(resNoerr) - sampTrue) ^ 2) > 
+  expect_true(mean((fitted(resNoerr) - sampTrue) ^ 2) >
               mean((fitted(resErr) - sampTrue) ^ 2))
 })
 

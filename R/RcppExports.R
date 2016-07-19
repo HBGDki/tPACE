@@ -56,4 +56,3 @@ Rrotatedmullwlsk <- function(bw, kernel_type, tPairs, cxxn, win, xygrid, npoly, 
 trapzRcpp <- function(X, Y) {
     .Call('fdapace_trapzRcpp', PACKAGE = 'fdapace', X, Y)
 }
-

@@ -1,14 +1,14 @@
 #' Fitted functional sample from FPCA object
-#' 
+#'
 #' Combine the zero-meaned fitted values and the interpolated mean to get the fitted values for the trajectories or the derivatives of these trajectories.
 #' Estimates are given on the work-grid, not on the observation grid. Use ConvertSupport to map the estimates to your desired domain.
-#' 
-#' @param object A object of class FPCA returned by the function FPCA().   
+#'
+#' @param object A object of class FPCA returned by the function FPCA().
 #' @param K The integer number of the first K components used for the representation. (default: length(fpcaObj$lambda ))
 #' @param derOptns A list of options to control the derivation parameters specified by \code{list(name=value)}. See `Details'. (default = NULL)
 #'
 #' @return An \code{n} by \code{length(workGrid)} matrix, each row of which contains a sample.
-#' @details Available derivation control options are 
+#' @details Available derivation control options are
 #' \describe{
 #' \item{p}{The order of the derivatives returned (default: 0, max: 2)}
 #' \item{method}{The method used to produce the sample of derivatives ('EIG' (default) or 'QUO'). See Liu and Mueller (2009) for more details}
@@ -23,7 +23,7 @@
 #' pts <- seq(0, 1, by=0.05)
 #' sampWiener <- Wiener(n, pts)
 #' sampWiener <- Sparsify(sampWiener, pts, 10)
-#' res <- FPCA(sampWiener$Ly, sampWiener$Lt, 
+#' res <- FPCA(sampWiener$Ly, sampWiener$Lt,
 #'             list(dataType='Sparse', error=FALSE, kernel='epan', verbose=TRUE))
 #' fittedY <- fitted(res)
 #' @references
@@ -37,11 +37,11 @@ fitted.FPCA <-  function (object, K = NULL, derOptns = list(), ...) {
     K <- ddd[['k']]
     warning("specifying 'k' is deprecated. Use 'K' instead!")
   }
-  
+
   derOptns <- SetDerOptions(fpcaObject = object, derOptns)
   p <- derOptns[['p']]
   method <- derOptns[['method']]
-  bw <-  derOptns[['bw']] # 
+  bw <-  derOptns[['bw']] #
   kernelType <- derOptns[['kernelType']]
 
   fpcaObj <- object
@@ -58,17 +58,17 @@ fitted.FPCA <-  function (object, K = NULL, derOptns = list(), ...) {
       stop("'fitted.FPCA()' is requested to use more components than it currently has available. (or 'K' is smaller than 1)")
     }
   }
- 
+
   if( ! (p %in% c(0,1,2))){
     stop("'fitted.FPCA()' is requested to use a derivative order other than p = {0,1,2}!")
-  } 
+  }
 
-  if( p < 1 ){  
-    ZMFV = fpcaObj$xiEst[,1:K, drop = FALSE] %*% t(fpcaObj$phi[,1:K, drop = FALSE]);   
-    IM = fpcaObj$mu 
-    return( t(apply( ZMFV, 1, function(x) x + IM))) 
+  if( p < 1 ){
+    ZMFV = fpcaObj$xiEst[,1:K, drop = FALSE] %*% t(fpcaObj$phi[,1:K, drop = FALSE]);
+    IM = fpcaObj$mu
+    return( t(apply( ZMFV, 1, function(x) x + IM)))
   } else { #Derivative is not zero
- 
+
     if( K > SelectK( fpcaObj, FVEthreshold=0.95, criterion='FVE')$K ){
     warning("Potentially you use too many components to estimate derivatives. \n  Consider using SelectK() to find a more informed estimate for 'K'.");
     }
@@ -83,17 +83,17 @@ fitted.FPCA <-  function (object, K = NULL, derOptns = list(), ...) {
     workGrid = fpcaObj$workGrid
 
     if ( method == 'EIG'){
-      phi = apply(phi, 2, function(phiI) Lwls1D(bw = bw, kernelType, win = rep(1, length(workGrid)), 
+      phi = apply(phi, 2, function(phiI) Lwls1D(bw = bw, kernelType, win = rep(1, length(workGrid)),
                                                   xin = workGrid, yin = phiI, xout = workGrid, npoly = p, nder = p))
       mu = Lwls1D(bw = bw, kernelType, win = rep(1, length(workGrid)), xin = workGrid, yin = mu, xout = workGrid, npoly = p, nder = p)
       ZMFV = fpcaObj$xiEst[,1:K, drop = FALSE] %*% t(phi[,1:K, drop = FALSE]);
-      IM = mu 
+      IM = mu
       return( t(apply( ZMFV, 1, function(x) x + IM) ))
     }
 
     if( method == 'QUO'){
       impSample <- fitted(fpcaObj, K = K); # Look ma! I do recursion!
-      return( t(apply(impSample, 1, function(curve) Lwls1D(bw = bw, kernelType, win = rep(1, length(workGrid)), 
+      return( t(apply(impSample, 1, function(curve) Lwls1D(bw = bw, kernelType, win = rep(1, length(workGrid)),
                                                          xin = workGrid, yin = curve, xout = workGrid, npoly = p, nder = p))))
     }
   }
@@ -117,7 +117,7 @@ getDerivative <- function(y, t, ord=1){  # Consider using the smoother to get th
   if (ord == 1) {
     der <- numDeriv::grad( stats::splinefun(newt, newy) , x = t )
   } else if (ord == 2) {
-    der <- sapply(t, function(t0) 
+    der <- sapply(t, function(t0)
                   numDeriv::hessian( stats::splinefun(newt, newy) , x = t0 )
                   )
   }
@@ -132,7 +132,3 @@ getSmoothCurve <- function(t, ft, GCV = FALSE, kernelType = 'epan', mult = 1){
   smoothCurve = Lwls1D(bw = myBw, kernel_type= kernelType, win = rep(1, length(t)), yin = ft, xout = t, xin= t)
   return(smoothCurve)
 }
-
-
-
-

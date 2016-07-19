@@ -6,7 +6,7 @@
 // [[Rcpp::depends(RcppEigen)]]
 // [[Rcpp::export]]
 
-Eigen::VectorXd interp2lin( const Eigen::Map<Eigen::VectorXd> & xin, const Eigen::Map<Eigen::VectorXd> & yin, const Eigen::Map<Eigen::VectorXd> & zin, const Eigen::Map<Eigen::VectorXd> & xou, const Eigen::Map<Eigen::VectorXd> & you){ 
+Eigen::VectorXd interp2lin( const Eigen::Map<Eigen::VectorXd> & xin, const Eigen::Map<Eigen::VectorXd> & yin, const Eigen::Map<Eigen::VectorXd> & zin, const Eigen::Map<Eigen::VectorXd> & xou, const Eigen::Map<Eigen::VectorXd> & you){
 
   // Setting up initial values
 
@@ -14,15 +14,15 @@ Eigen::VectorXd interp2lin( const Eigen::Map<Eigen::VectorXd> & xin, const Eigen
   const unsigned int nYGrid = yin.size();
   const unsigned int nKnownPoints = nXGrid * nYGrid;
   const unsigned int nUnknownPoints = xou.size();
- 
+
   Eigen::VectorXd result(nUnknownPoints);
 
   // Preliminary checks
 
   // if ( nXGrid != nYGrid ){
     // Rcpp::stop("Input Y-grid does not have the same number of points as Input X-grid.");
-  // } else 
-  if ( nKnownPoints != zin.size() ) {  
+  // } else
+  if ( nKnownPoints != zin.size() ) {
     Rcpp::stop("Input Z-grid does not have the same number of points as the product of #Input Y-grid times #Input X-grid.");
   } else if ( nUnknownPoints != you.size() ){
     Rcpp::stop("Output Y-grid does not have the same number of points as Output X-grid.");
@@ -34,8 +34,8 @@ Eigen::VectorXd interp2lin( const Eigen::Map<Eigen::VectorXd> & xin, const Eigen
     Rcpp::warning("Output X-grid  is outside the upper range of the input X-grid.");
   } else if ( yin.maxCoeff() <  you.maxCoeff() ){
     Rcpp::warning("Output Y-grid  is outside the upper range of the input Y-grid.");
-  } 
- 
+  }
+
   const double ymin = yin.minCoeff();
   const double xmin = xin.minCoeff();
   const double ymax = yin.maxCoeff();
@@ -51,22 +51,22 @@ Eigen::VectorXd interp2lin( const Eigen::Map<Eigen::VectorXd> & xin, const Eigen
   Eigen::Vector4d za;
   Eigen::Matrix4d A;
   // Column 1
-  A.setOnes(); 
+  A.setOnes();
 
-  for (unsigned int u = 0; u !=nUnknownPoints; ++u){ 
-     
-    if ( (xmax  < xou(u))  || (ymax <  you(u)) || // If x/you(u) is above the upper values of xin/yin 
+  for (unsigned int u = 0; u !=nUnknownPoints; ++u){
+
+    if ( (xmax  < xou(u))  || (ymax <  you(u)) || // If x/you(u) is above the upper values of xin/yin
          (xmin  > xou(u))  || (ymin >  you(u)) ){ // If x/you(u) is below the lower values of xin/yin
       result(u) = std::numeric_limits<double>::quiet_NaN() ;
-      
+
     } else {
       // Find the appropriate x coordinates/save them in xa (2-by-1)
       // Get iterator pointing to the first element which is not less than xou(u)
-      
-      // This works if compiled with g++ -DNDEBUG ... etc.  
+
+      // This works if compiled with g++ -DNDEBUG ... etc.
       //const double* x1 = std::lower_bound(&xin[0], &xin[nXGrid], xou(u));
       //const double* y1 = std::lower_bound(&yin[0], &yin[nYGrid], you(u));
-    
+
       const double* x1 = std::lower_bound(xin.data(), xin.data() + nXGrid, xou(u));
       const double* y1 = std::lower_bound(yin.data(), yin.data() + nYGrid, you(u));
 
@@ -81,7 +81,7 @@ Eigen::VectorXd interp2lin( const Eigen::Map<Eigen::VectorXd> & xin, const Eigen
       const double* x0p;
       const double* y0p;
 
-     
+
       if( y1 != &yin[0]){
         ya(0) = *--y1;
         y0p = y1p - 1;
@@ -96,7 +96,7 @@ Eigen::VectorXd interp2lin( const Eigen::Map<Eigen::VectorXd> & xin, const Eigen
         xa(0) = xa(1);
         x0p = x1p;
       }
-     
+
 //      const double* x1p = std::find(&xin[0], &xin[nXGrid], xa(1));
 //      const double* y1p = std::find(&yin[0], &yin[nYGrid], ya(1));
 //      const double* x0p = x1p - 1;
@@ -107,7 +107,7 @@ Eigen::VectorXd interp2lin( const Eigen::Map<Eigen::VectorXd> & xin, const Eigen
       za(2) = zin( (y0p -&yin[0]) * nXGrid +  (x1p -&xin[0]));
       za(3) = zin( (y1p -&yin[0]) * nXGrid +  (x1p -&xin[0]));
 
-      // Column 2  
+      // Column 2
       A(0,1) = xa(0);   A(1,1) = xa(0);
       A(2,1) = xa(1);   A(3,1) = xa(1);
       // Column 3
@@ -116,14 +116,14 @@ Eigen::VectorXd interp2lin( const Eigen::Map<Eigen::VectorXd> & xin, const Eigen
       // Column 4
       A(0,3) = ya(0) * xa(0);   A(1,3) = ya(1) * xa(0);
       A(2,3) = ya(0) * xa(1);   A(3,3) = ya(1) * xa(1);
-  
+
       fq << 1 , xou(u), you(u), xou(u)*you(u);
-  
+
       //  Rcpp::Rcout << "xa: " << xa.transpose() << ", ya: " << ya.transpose()  << ", za: " << za.transpose() << ", fq: " << fq << std::endl;
-  
+
       result(u) = fq * A.colPivHouseholderQr().solve(za);
     }
   }
-  
-  return ( result ); 
+
+  return ( result );
 }

@@ -1,6 +1,6 @@
 # TODO: Roxygen documentation
 
-TruncateObs <- function(Ly, Lt, obsGrid, buff=.Machine$double.eps * max(abs(obsGrid)) * 3) { 
+TruncateObs <- function(Ly, Lt, obsGrid, buff=.Machine$double.eps * max(abs(obsGrid)) * 3) {
   tmpInd <- mapply(function(yVec, tVec) {
                   ind <- (tVec >= min(obsGrid) - buff & tVec <= max(obsGrid) + buff)
                   return(ind)

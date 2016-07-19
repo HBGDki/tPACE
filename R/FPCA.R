@@ -1,17 +1,17 @@
 #' Functional Principal Component Analysis
-#' 
-#' FPCA for dense or sparse functional data. 
-#' 
+#'
+#' FPCA for dense or sparse functional data.
+#'
 #' @param Ly A list of \emph{n} vectors containing the observed values for each individual. Missing values specified by \code{NA}s are supported for dense case (\code{dataType='dense'}).
 #' @param Lt A list of \emph{n} vectors containing the observation time points for each individual corresponding to y. Each vector should be sorted in ascending order.
 #' @param optns A list of options control parameters specified by \code{list(name=value)}. See `Details'.
 #'
-#' @details Available control options are 
+#' @details Available control options are
 #' \describe{
 #' \item{userBwCov}{The bandwidth value for the smoothed covariance function; positive numeric - default: determine automatically based on 'methodBwCov'}
 #' \item{methodBwCov}{The bandwidth choice method for the smoothed covariance function; 'GMeanAndGCV' (the geometric mean of the GCV bandwidth and the minimum bandwidth),'CV','GCV' - default: 10\% of the support}
 #' \item{userBwMu}{The bandwidth value for the smoothed mean function (using 'CV' or 'GCV'); positive numeric - default: determine automatically based on 'methodBwMu'}
-#' \item{methodBwMu}{The bandwidth choice method for the mean function; 'GMeanAndGCV' (the geometric mean of the GCV bandwidth and the minimum bandwidth),'CV','GCV' - default: 5\% of the support} 
+#' \item{methodBwMu}{The bandwidth choice method for the mean function; 'GMeanAndGCV' (the geometric mean of the GCV bandwidth and the minimum bandwidth),'CV','GCV' - default: 5\% of the support}
 #' \item{dataType}{The type of design we have (usually distinguishing between sparse or dense functional data); 'Sparse', 'Dense', 'DenseWithMV', 'p>>n' - default:  determine automatically based on 'IsRegular'}
 #' \item{diagnosticsPlot}{Make diagnostics plot (design plot, mean, scree plot and first K (<=3) eigenfunctions); logical - default: FALSE}
 #' \item{error}{Assume measurement error in the dataset; logical - default: TRUE}
@@ -41,7 +41,7 @@
 #' \item{sigma2}{Variance for measure error.}
 #' \item{lambda}{A vector of length \emph{K} containing eigenvalues.}
 #' \item{phi}{An nWorkGrid by \emph{K} matrix containing eigenfunctions, supported on workGrid.}
-#' \item{xiEst}{A \emph{n} by \emph{K} matrix containing the FPC estimates.} 
+#' \item{xiEst}{A \emph{n} by \emph{K} matrix containing the FPC estimates.}
 #' \item{xiVar}{A list of length \emph{n}, each entry containing the variance estimates for the FPC estimates.}
 #' \item{obsGrid}{The (sorted) grid points where all observation points are pooled.}
 #' \item{mu}{A vector of length nWorkGrid containing the mean function estimate.}
@@ -56,19 +56,19 @@
 #' \item{FVE}{A percentage indicating the total variance explained by chosen FPCs with corresponding 'FVEthreshold'.}
 #' \item{criterionValue}{A scalar specifying the criterion value obtained by the selected number of components with specific methodSelectK: FVE,AIC,BIC values or NULL for fixedK.}
 #' \item{inputData}{A list containting the original 'Ly' and 'Lt' lists used as inputs to FPCA. NULL if 'lean' was specified to be TRUE.}
-#' 
+#'
 #' @examples
 #' set.seed(1)
 #' n <- 20
 #' pts <- seq(0, 1, by=0.05)
 #' sampWiener <- Wiener(n, pts)
 #' sampWiener <- Sparsify(sampWiener, pts, 10)
-#' res <- FPCA(sampWiener$Ly, sampWiener$Lt, 
+#' res <- FPCA(sampWiener$Ly, sampWiener$Lt,
 #'             list(dataType='Sparse', error=FALSE, kernel='epan', verbose=TRUE))
 #' CreateCovPlot(res, 'Fitted')
 #' @references
 #' \cite{Yao, F., Mueller, H.G., Clifford, A.J., Dueker, S.R., Follett, J., Lin, Y., Buchholz, B., Vogel, J.S. (2003). "Shrinkage estimation for functional principal component scores, with application to the population kinetics of plasma folate." Biometrics 59, 676-685. (Shrinkage estimates for dense data)}
-#' 
+#'
 #' \cite{Yao, Fang, Hans-Georg Mueller, and Jane-Ling Wang. "Functional data analysis for sparse longitudinal data." Journal of the American Statistical Association 100, no. 470 (2005): 577-590. (Sparse data FPCA)}
 #'
 #' \cite{Liu, Bitao, and Hans-Georg Mueller. "Estimating derivatives for samples of sparsely observed functions, with application to online auction dynamics." Journal of the American Statistical Association 104, no. 486 (2009): 704-717. (Sparse data FPCA)}
@@ -77,12 +77,12 @@
 #' @export
 
 FPCA = function(Ly, Lt, optns = list()){
-  
+
   # Check the data validity for further analysis
   CheckData(Ly,Lt)
-  
+
   # Force the data to be list of numeric members and handle NA's
-  #Ly <- lapply(Ly, as.numeric) 
+  #Ly <- lapply(Ly, as.numeric)
   #Lt <- lapply(Lt, as.numeric)
   #Lt <- lapply(Lt, signif, 14)
   #inputData <- list(Ly=Ly, Lt=Lt);
@@ -93,16 +93,16 @@ FPCA = function(Ly, Lt, optns = list()){
 
   # Set the options structure members that are still NULL
   optns = SetOptions(Ly, Lt, optns);
-  
-  # Check the options validity for the PCA function. 
+
+  # Check the options validity for the PCA function.
   numOfCurves = length(Ly);
   CheckOptions(Lt, optns,numOfCurves)
 
   # Bin the data
-  if ( optns$useBinnedData != 'OFF'){ 
+  if ( optns$useBinnedData != 'OFF'){
       BinnedDataset <- GetBinnedDataset(Ly,Lt,optns)
       Ly = BinnedDataset$newy;
-      Lt = BinnedDataset$newt; 
+      Lt = BinnedDataset$newt;
       optns[['nRegGrid']] <- min(optns[['nRegGrid']],
                                  BinnedDataset[['numBins']])
       inputData$Ly <- Ly
@@ -124,7 +124,7 @@ FPCA = function(Ly, Lt, optns = list()){
   minGrid <- rangeGrid[1]
   maxGrid <- rangeGrid[2]
   cutRegGrid <- regGrid[regGrid > minGrid + diff(rangeGrid) * outPercent[1] -
-                        buff & 
+                        buff &
                         regGrid < minGrid + diff(rangeGrid) * outPercent[2] +
                         buff]
 
@@ -144,12 +144,12 @@ FPCA = function(Ly, Lt, optns = list()){
   mu <- smcObj$mu
 
 ## Covariance function and sigma2
-  if (!is.null(optns$userCov) && optns$methodMuCovEst != 'smooth') { 
+  if (!is.null(optns$userCov) && optns$methodMuCovEst != 'smooth') {
       scsObj <- GetUserCov(optns, obsGrid, cutRegGrid, buff, ymat)
   } else if (optns$methodMuCovEst == 'smooth') {
 # smooth cov and/or sigma2
     scsObj = GetSmoothedCovarSurface(Ly, Lt, mu, obsGrid, regGrid, optns,
-                                     optns$useBinnedCov) 
+                                     optns$useBinnedCov)
   } else if (optns$methodMuCovEst == 'cross-sectional') {
     scsObj = GetCovDense(ymat, mu, optns)
     if (length(obsGrid) != cutRegGrid || !all.equal(obsGrid, cutRegGrid)) {
@@ -162,10 +162,10 @@ FPCA = function(Ly, Lt, optns = list()){
   # workGrid: possibly truncated version of the regGrid
   workGrid <- scsObj$outGrid
 
-  
+
   # convert mu to truncated workGrid
   muWork <- ConvertSupport(obsGrid, toGrid = workGrid, mu=smcObj$mu)
-  
+
   # Get the results for the eigen-analysis
   eigObj = GetEigenAnalysisResults(smoothCov = scsObj$smoothCov, workGrid, optns, muWork = muWork)
 
@@ -186,9 +186,9 @@ FPCA = function(Ly, Lt, optns = list()){
     CovObs <- ConvertSupport(workGrid, truncObsGrid, Cov=eigObj$fittedCov)
   }
 
-  # Get scores  
+  # Get scores
   if (optns$methodXi == 'CE') {
-    if (optns$rho != 'no') { 
+    if (optns$rho != 'no') {
       if( length(Ly) > 2048 ){
         randIndx <- sample( length(Ly), 2048)
         rho <- GetRho(Ly[randIndx], Lt[randIndx], optns, muObs, truncObsGrid, CovObs, eigObj$lambda, phiObs, sigma2)
@@ -210,12 +210,12 @@ FPCA = function(Ly, Lt, optns = list()){
   }
 
   # Make the return object by MakeResultFPCA
-  ret <- MakeResultFPCA(optns, smcObj, muObs, scsObj, eigObj, 
-                        inputData = inputData, 
-                        scoresObj, truncObsGrid, workGrid, 
-                        rho = if (optns$rho =='cv') rho else NULL, 
+  ret <- MakeResultFPCA(optns, smcObj, muObs, scsObj, eigObj,
+                        inputData = inputData,
+                        scoresObj, truncObsGrid, workGrid,
+                        rho = if (optns$rho =='cv') rho else NULL,
                         fitLambda=fitLambda)
-  
+
   # select number of components based on specified criterion
   if(ret$optns$lean == TRUE){
     selectedK <- SelectK(fpcaObj = ret, criterion = optns$methodSelectK, FVEthreshold = optns$FVEthreshold,
@@ -223,16 +223,15 @@ FPCA = function(Ly, Lt, optns = list()){
   } else {
     selectedK <- SelectK(fpcaObj = ret, criterion = optns$methodSelectK, FVEthreshold = optns$FVEthreshold)
   }
-  
+
   ret <- append(ret, list(selectK = selectedK$K, criterionValue = selectedK$criterion))
   class(ret) <- 'FPCA'
   ret <- SubsetFPCA(fpcaObj = ret, K = ret$selectK)
-  
-  # Make a quick diagnostics plot     
+
+  # Make a quick diagnostics plot
   if(optns$diagnosticsPlot){
     CreateDiagnosticsPlot(ret);
   }
 
-  return(ret); 
+  return(ret);
 }
-

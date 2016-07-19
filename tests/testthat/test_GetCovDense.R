@@ -11,7 +11,7 @@ test_that('GetCovDense with noise, get sigma2', {
   pts <- seq(0, 1, length.out=p)
   sigma2 <- 0.1
   mu <- pts
-  samp <- Wiener(n, pts) + matrix(pts, n, p, byrow=TRUE) + 
+  samp <- Wiener(n, pts) + matrix(pts, n, p, byrow=TRUE) +
           rnorm(n * length(pts), sd=sqrt(sigma2))
   tmp <- MakeFPCAInputs(tVec=pts, yVec=samp)
 

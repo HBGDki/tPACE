@@ -19,7 +19,7 @@ test_that('FitEigenValues works for binned rcov, error=FALSE', {
   rcov3 <- GetRawCov(samp3$Ly, samp3$Lt, pts, rep(0, length(pts)), 'Sparse', error=FALSE)
   brcov3 <- BinRawCov(rcov3)
   phi <- cbind(sin((2 * 1 - 1) * pi * pts / 2), sin((2 * 2 - 1) * pi * pts / 2)) * sqrt(2)
-  expect_equal(FitEigenValues(rcov3, pts, phi, 2), FitEigenValues(brcov3, pts, phi, 2))  
+  expect_equal(FitEigenValues(rcov3, pts, phi, 2), FitEigenValues(brcov3, pts, phi, 2))
 })
 
 trueLambda <- 4 / (2 * (1:20) - 1)^2 / pi^2

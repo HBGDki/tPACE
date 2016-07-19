@@ -7,9 +7,6 @@ GetCount <- function(tpairs) {
     ret <- data.frame(expand.grid(pts, pts), as.numeric(tab))
     names(ret) <- c('t1', 't2', 'count')
     ret <- ret[ret$count != 0, ]
-    
+
     return(ret)
 }
-
-
-

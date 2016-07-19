@@ -20,8 +20,8 @@ test_that('Eigenvalues are close', {
 })
 
 # TEst integrate to one.
-innerProd <- apply(tmp$phi, 2, function(lam1) 
-                   apply(tmp$phi, 2, function(lam2) 
+innerProd <- apply(tmp$phi, 2, function(lam1)
+                   apply(tmp$phi, 2, function(lam2)
                          pracma::trapz(noErrBin$outGrid, lam1 * lam2)))
 test_that('Eigenfunctions are orthonormal', {
   expect_equal(diag(innerProd), rep(1, tmp$kChoosen))
@@ -32,4 +32,3 @@ test_that('Eigenfunctions are orthonormal', {
 # # with error
 # p1 <- SetOptions(samp3$Ly, samp3$Lt, CreateOptions(dataType='Sparse', error=TRUE, kernel='epan'))
 # Err <- GetSmoothedCovarSurface(samp3$Ly, samp3$Lt, mu3, pts, regGrid, p1, useBinnedCov=FALSE)
-

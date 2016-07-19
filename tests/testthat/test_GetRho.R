@@ -15,18 +15,18 @@ fittedCov <- phi %*% diag(lambda) %*% t(phi)
 
 
 # RandTime
-test_that('RandTime is the same as getTimeID', 
+test_that('RandTime is the same as getTimeID',
           expect_equal(RandTime(t, isRandom=FALSE), c(2, 1, 2)))
 
 
 # cvRho
 leaveOutInd <- RandTime(t, isRandom=FALSE)
-test_that('cvRho matches getScores2', 
+test_that('cvRho matches getScores2',
           expect_equal(cvRho(0.5, leaveOutInd, y, t, list(), mu, obsGrid,
                              fittedCov, lambda, phi), 0.775069444444445))
 
 
-test_that('GetRho matches cv_rho.m', 
+test_that('GetRho matches cv_rho.m',
           expect_equal(GetRho(y, t, list(), mu, obsGrid, fittedCov, lambda, phi, 0.01), 0.510049017252264)
           )
 
@@ -46,13 +46,13 @@ test_that('Truncation works for GetRho', {
   samp4 <- Wiener(n, pts) + rnorm(n * length(pts), sd=0.1)
   samp4 <- Sparsify(samp4, pts, 10)
   samp4$Ly[[1]] <- samp4$Lt[[1]] <- c(0, 1)
-  samp4Trunc <- TruncateObs(samp4$Ly, samp4$Lt, truncPts)  
+  samp4Trunc <- TruncateObs(samp4$Ly, samp4$Lt, truncPts)
   pTrunc <- SetOptions(samp4$Ly, samp4$Lt, list(dataType='Sparse', error=TRUE, kernel='epan', verbose=TRUE))
   smc4 <- GetSmoothedCovarSurface(samp4$Ly, samp4$Lt, mu, pts, pts, pTrunc)
   eig4 <- GetEigenAnalysisResults(smc4$smoothCov, pts, pTrunc)
   phiObs <- ConvertSupport(pts, truncPts, phi=eig4$phi)
   CovObs <- ConvertSupport(pts, truncPts, Cov=eig4$fittedCov)
-  
+
   rho4 <- GetRho(samp4Trunc$Ly, samp4Trunc$Lt, pTrunc, mu[1:length(truncPts)], truncPts, CovObs, eig4$lambda, phiObs, smc4$sigma2)
   expect_true(rho4 < 0.2)
 })
@@ -88,4 +88,3 @@ test_that('Truncation works for GetRho', {
 # alpha = linspace(0.01, 0.22,50);
 # rho = gamma*alpha;
 # cv_rho(y, t, mu, phi, lambda, sigma, sig1, noeig, error, method, shrink, out1,   regular, rho, ni, tjID, verbose)
-

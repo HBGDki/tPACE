@@ -6,7 +6,7 @@
 *.exe
 *.o
 *.so
- 
+
 # Packages #
 ############
 # it's better to unpack these files and commit the raw source
@@ -19,14 +19,14 @@
 *.rar
 *.tar
 *.zip
- 
+
 # Logs and databases #
 ######################
 *.log
 *.sql
 *.sqlite
 ..Rcheck
- 
+
 # OS generated files #
 ######################
 .DS_Store
@@ -39,7 +39,7 @@ Thumbs.db
 
 # Specific to this repo
 symbols.rds
- .RData 
+ .RData
  .RDataTmp
 *.swp
 *.swo
@@ -52,11 +52,11 @@ symbols.rds
 *.so
 *.gcda
 *.gcno
-#RcppExports.R 
+#RcppExports.R
 #RcppExports.cpp
-tmp.R 
-ObsoleteFunctions 
-notesXiongtao.txt 
+tmp.R
+ObsoleteFunctions
+notesXiongtao.txt
 #
 # Vignette files
 vignettes/Sweave.sty

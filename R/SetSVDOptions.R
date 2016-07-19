@@ -19,7 +19,7 @@ SetSVDOptions <- function(Ly1, Lt1, Ly2, Lt2, SVDoptns){
   noScores = SVDoptns[['noScores']]
   regulRS = SVDoptns[['regulRS']]
   flip = SVDoptns[['flip']]
-  
+
   if(is.null(dataType1)){# do we have dataType or sparse functional data for the first sample
     dataType1 = IsRegular(Lt1);
   }
@@ -69,7 +69,7 @@ SetSVDOptions <- function(Ly1, Lt1, Ly2, Lt2, SVDoptns){
       FVEthreshold = 0.95;
     }
   }
-  
+
   if(is.null(noScores)){ # the method of choosing the number of singular components K
     noScores = FALSE;
   }
@@ -79,15 +79,15 @@ SetSVDOptions <- function(Ly1, Lt1, Ly2, Lt2, SVDoptns){
   if(is.null(flip)){ # the method of choosing the number of singular components K
     flip = FALSE;
   }
-  
-  
+
+
   retSVDOptns <- list(dataType1 = dataType1, dataType2 = dataType2,
                       bw1 = bw1, bw2 = bw2, userMu1 = userMu1, userMu2 = userMu2,
                       useGAM = useGAM, methodSelectK = methodSelectK,
-                      FVEthreshold = FVEthreshold, maxK = maxK, flip = flip, 
+                      FVEthreshold = FVEthreshold, maxK = maxK, flip = flip,
                       kernel = kernel, nRegGrid1 = nRegGrid1, nRegGrid2 = nRegGrid2,
                       bwRoutine = bwRoutine, rmDiag = rmDiag, noScores = noScores, regulRS = regulRS)
-  
+
   invalidNames <- !names(SVDoptns) %in% names(retSVDOptns)
   if (any(invalidNames)) {
     stop(sprintf('Invalid option names: %s',
@@ -95,4 +95,3 @@ SetSVDOptions <- function(Ly1, Lt1, Ly2, Lt2, SVDoptns){
   }
   return(retSVDOptns)
 }
-

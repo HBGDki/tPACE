@@ -12,7 +12,7 @@ system.time(
 CreateDesignPlot(Lt, obsGrid, isColorPlot=TRUE)
 )
 
-# ... are passed in 
+# ... are passed in
 set.seed(1)
 n <- 5e2
 sparsity <- 1:5

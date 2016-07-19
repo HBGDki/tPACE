@@ -48,7 +48,7 @@ GetLogLik = function(fpcaObj, K, Ly = NULL, Lt = NULL){
     for(i in 1:length(Ly)){
       if(length(Lt[[i]]) == 1){
         phi_i = t(as.matrix(ConvertSupport(fromGrid = fpcaObj$workGrid, toGrid = Lt[[i]],
-                               phi = phi)))        
+                               phi = phi)))
       } else {
         phi_i = ConvertSupport(fromGrid = fpcaObj$workGrid, toGrid = Lt[[i]],
                                phi = phi)

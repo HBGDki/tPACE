@@ -11,9 +11,9 @@
 #  isColorPlot: TRUE: the resulting matrix has 1 indicates there exists points for out1(i) and out1(j)
 #               FALSE: the resulting matrix contains counts of points for out1(i) and out1(j)
 ######
-# Output: 
+# Output:
 ######
-#  res: N * N matrix contains count for each distinct pairs of 
+#  res: N * N matrix contains count for each distinct pairs of
 #             time points
 
 DesignPlotCount = function(t, obsGrid, noDiagonal, isColorPlot){

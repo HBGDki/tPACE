@@ -1,8 +1,8 @@
 GenerateFunctionalData <-function(N, M, mu=NULL, lambda=NULL, k = 2,  basisType='cos'){
-  
+
   if(N <2){
     stop("Sampes of size 1 are irrelevant.")
-  }  
+  }
   if(M <20){
     stop("Dense samples with less than 20 observations per subject are irrelevant.")
   }
@@ -21,12 +21,11 @@ GenerateFunctionalData <-function(N, M, mu=NULL, lambda=NULL, k = 2,  basisType=
   }
   if( !(basisType %in% c('cos','sin','fourier'))){
     stop("Make sure you provide a valid parametric basis.")
-  } 
-  
+  }
+
   Ksi <- apply(matrix(rnorm(N*k), ncol=k), 2, scale) %*% diag(lambda)
   Phi <- CreateBasis(pts= s, type= basisType, K = k)
-  
-  yTrue <- t(matrix(rep(mu,N), nrow=M)) + Ksi %*% t(Phi) 
+
+  yTrue <- t(matrix(rep(mu,N), nrow=M)) + Ksi %*% t(Phi)
   return(list(Y = yTrue, Phi = Phi) )
 }
- 

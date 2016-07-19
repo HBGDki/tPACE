@@ -27,4 +27,3 @@ test_that('BWNN works for large sample', {
   bw <- BwNN(samp[[1]]) # Lt or Lt
   expect_true(bw['cov'] >= 0.01 && bw['cov'] < 0.1 && bw['mu'] <= bw['cov'])
 })
-
