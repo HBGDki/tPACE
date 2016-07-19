@@ -12,7 +12,7 @@ CreateDesignPlot(Lt, obsGrid = NULL, isColorPlot = TRUE,
 
 \item{obsGrid}{a vector of sorted observed time points}
 
-\item{isColorPlot}{an option for colorful plot: 
+\item{isColorPlot}{an option for colorful plot:
 TRUE: create color plot with color indicating counts
 FALSE: create black and white plot with dots indicating observed time pairs}
 

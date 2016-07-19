@@ -24,7 +24,7 @@ GetCrCovYZ(bw = NULL, Z, Zmu = NULL, Ly, Lt = NULL, Ymu = NULL,
 
 \item{kern}{Kernel type to be used. See ?FPCA for more details. (defult: 'gauss')
 If the variables Ly1 is in matrix form the data are assumed dense and only
-the raw cross-covariance is returned. One can obtain Ymu1 
+the raw cross-covariance is returned. One can obtain Ymu1
 from \code{FPCA} and \code{ConvertSupport}.}
 }
 \value{

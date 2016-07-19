@@ -18,7 +18,7 @@ A list containing the following fields:
 \item{sigma2}{Variance for measure error.}
 \item{lambda}{A vector of length \emph{K} containing eigenvalues.}
 \item{phi}{An nWorkGrid by \emph{K} matrix containing eigenfunctions, supported on workGrid.}
-\item{xiEst}{A \emph{n} by \emph{K} matrix containing the FPC estimates.} 
+\item{xiEst}{A \emph{n} by \emph{K} matrix containing the FPC estimates.}
 \item{xiVar}{A list of length \emph{n}, each entry containing the variance estimates for the FPC estimates.}
 \item{obsGrid}{The (sorted) grid points where all observation points are pooled.}
 \item{mu}{A vector of length nWorkGrid containing the mean function estimate.}
@@ -38,12 +38,12 @@ A list containing the following fields:
 FPCA for dense or sparse functional data.
 }
 \details{
-Available control options are 
+Available control options are
 \describe{
 \item{userBwCov}{The bandwidth value for the smoothed covariance function; positive numeric - default: determine automatically based on 'methodBwCov'}
 \item{methodBwCov}{The bandwidth choice method for the smoothed covariance function; 'GMeanAndGCV' (the geometric mean of the GCV bandwidth and the minimum bandwidth),'CV','GCV' - default: 10\% of the support}
 \item{userBwMu}{The bandwidth value for the smoothed mean function (using 'CV' or 'GCV'); positive numeric - default: determine automatically based on 'methodBwMu'}
-\item{methodBwMu}{The bandwidth choice method for the mean function; 'GMeanAndGCV' (the geometric mean of the GCV bandwidth and the minimum bandwidth),'CV','GCV' - default: 5\% of the support} 
+\item{methodBwMu}{The bandwidth choice method for the mean function; 'GMeanAndGCV' (the geometric mean of the GCV bandwidth and the minimum bandwidth),'CV','GCV' - default: 5\% of the support}
 \item{dataType}{The type of design we have (usually distinguishing between sparse or dense functional data); 'Sparse', 'Dense', 'DenseWithMV', 'p>>n' - default:  determine automatically based on 'IsRegular'}
 \item{diagnosticsPlot}{Make diagnostics plot (design plot, mean, scree plot and first K (<=3) eigenfunctions); logical - default: FALSE}
 \item{error}{Assume measurement error in the dataset; logical - default: TRUE}
@@ -76,7 +76,7 @@ n <- 20
 pts <- seq(0, 1, by=0.05)
 sampWiener <- Wiener(n, pts)
 sampWiener <- Sparsify(sampWiener, pts, 10)
-res <- FPCA(sampWiener$Ly, sampWiener$Lt, 
+res <- FPCA(sampWiener$Ly, sampWiener$Lt,
             list(dataType='Sparse', error=FALSE, kernel='epan', verbose=TRUE))
 CreateCovPlot(res, 'Fitted')
 }

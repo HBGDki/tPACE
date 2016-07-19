@@ -15,7 +15,7 @@ FPCAder(fpcaObj, derOptns = list(p = 1))
 Take derivative of an FPCA object
 }
 \details{
-Available derivation control options are 
+Available derivation control options are
 \describe{
 \item{p}{The order of the derivatives returned (default: 0, max: 2)}
 \item{bw}{Bandwidth for smoothing the derivatives (default: p * 0.1 * S)}
@@ -28,7 +28,7 @@ n <- 20
 pts <- seq(0, 1, by=0.05)
 sampWiener <- Wiener(n, pts)
 sampWiener <- Sparsify(sampWiener, pts, 10)
-res <- FPCA(sampWiener$Ly, sampWiener$Lt, 
+res <- FPCA(sampWiener$Ly, sampWiener$Lt,
             list(dataType='Sparse', error=FALSE, kernel='epan', verbose=TRUE))
 derRes <- FPCAder(res)
 }

@@ -33,7 +33,7 @@ oldFCReg(depVar, expVarScal = NULL, expVarFunc = NULL,
 Functional concurrent regression for dense or sparse functional data. This method is kept only of compatibility purposes. Do not use.
 }
 \references{
-\cite{Yao, F., Mueller, H.G., Wang, J.L. "Functional Linear Regression Analysis for Longitudinal Data." Annals of Statistics 33, (2005): 2873-2903.(Dense data)} 
+\cite{Yao, F., Mueller, H.G., Wang, J.L. "Functional Linear Regression Analysis for Longitudinal Data." Annals of Statistics 33, (2005): 2873-2903.(Dense data)}
 
 \cite{Senturk, D., Nguyen, D.V. "Varying Coefficient Models for Sparse Noise-contaminated Longitudinal Data", Statistica Sinica 21(4), (2011): 1831-1856. (Sparse data)}
 }

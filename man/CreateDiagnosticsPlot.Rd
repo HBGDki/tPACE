@@ -22,7 +22,7 @@ CreateDiagnosticsPlot(fpcaObj, openNewDev = FALSE, addLegend = TRUE)
 }
 \description{
 This function by default creates standard diagnostics for a functional sample. It prints the design plot, mean function, scree-plot
-and first three eigenfunctions of a sample. If provided with a derivative options object (?FPCAder) it will return the 
+and first three eigenfunctions of a sample. If provided with a derivative options object (?FPCAder) it will return the
 differentiated mean and first two principal modes of variations for 50\%, 75\%, 100\%, 125\% and 150\% of the defined bandwidth choice.
 
 \code{plot.FPCA} is currently implemented as just plotting the diagnostics plots, the same as CreateDiagnosticsPlot.
@@ -36,10 +36,10 @@ n <- 20
 pts <- seq(0, 1, by=0.05)
 sampWiener <- Wiener(n, pts)
 sampWiener <- Sparsify(sampWiener, pts, 10)
-res1 <- FPCA(sampWiener$Ly, sampWiener$Lt, 
+res1 <- FPCA(sampWiener$Ly, sampWiener$Lt,
             list(dataType='Sparse', error=FALSE, kernel='epan', verbose=FALSE))
 plot(res1)
 # Same as
-CreateDiagnosticsPlot(res1) 
+CreateDiagnosticsPlot(res1)
 }
 

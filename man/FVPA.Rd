@@ -17,8 +17,8 @@ FVPA(y, t, q = 0.1, optns = list(error = TRUE, FVEthreshold = 0.9))
 }
 \value{
 A list containing the following fields:
-\item{sigma2}{Variance estimator of the functional variance process.} 
-\item{fpcaObjY}{FPCA object for the original data.} 
+\item{sigma2}{Variance estimator of the functional variance process.}
+\item{fpcaObjY}{FPCA object for the original data.}
 \item{fpcaObjR}{FPCA object for the functional variance process associated with the original data.}
 }
 \description{
@@ -30,7 +30,7 @@ n <- 25
 pts <- seq(0, 1, by=0.01)
 sampWiener <- Wiener(n, pts)
 # Data have to dense for FVPA to be relevant!
-sampWiener <- Sparsify(sampWiener, pts, 101) 
+sampWiener <- Sparsify(sampWiener, pts, 101)
 fvpaObj <- FVPA(sampWiener$Ly, sampWiener$Lt)
 }
 \references{
