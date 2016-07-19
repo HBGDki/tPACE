@@ -5,30 +5,29 @@
 \alias{plot.FPCA}
 \title{Functional Principal Component Analysis Diagnostics plot}
 \usage{
-CreateDiagnosticsPlot(fpcaObj, openNewDev = FALSE, addLegend = TRUE)
+CreateDiagnosticsPlot(...)
 
-\method{plot}{FPCA}(x, ...)
+\method{plot}{FPCA}(fpcaObj, openNewDev = FALSE, addLegend = TRUE, ...)
 }
 \arguments{
+\item{...}{passed into \code{plot.FPCA}.}
+
 \item{fpcaObj}{An FPCA class object returned by FPCA().}
 
 \item{openNewDev}{A logical specifying if a new device should be opened - default: FALSE}
 
 \item{addLegend}{A logical specifying whether to add legend.}
-
-\item{x}{An FPCA class object returned by FPCA()}
-
-\item{...}{passed into CreateDiagnosticsPlot}
 }
 \description{
-This function by default creates standard diagnostics for a functional sample. It prints the design plot, mean function, scree-plot
-and first three eigenfunctions of a sample. If provided with a derivative options object (?FPCAder) it will return the
-differentiated mean and first two principal modes of variations for 50\%, 75\%, 100\%, 125\% and 150\% of the defined bandwidth choice.
+Deprecated. Use \code{plot.FPCA} instead.
 
-\code{plot.FPCA} is currently implemented as just plotting the diagnostics plots, the same as CreateDiagnosticsPlot.
+This function plot the results for an FPCA. It prints the design plot, mean function, scree-plot
+and the first three eigenfunctions of a sample. If provided with a derivative options object (?FPCAder) it will return the
+differentiated mean and first two principal modes of variations for 50\%, 75\%, 100\%, 125\% and 150\% of the defined bandwidth choice.
 }
 \details{
 The black, red, and green curves stand for the first, second, and third eigenfunctions, respectively.
+\code{plot.FPCA} is currently implemented only for the original function, but not a derivative FPCA object.
 }
 \examples{
 set.seed(1)
@@ -39,7 +38,5 @@ sampWiener <- Sparsify(sampWiener, pts, 10)
 res1 <- FPCA(sampWiener$Ly, sampWiener$Lt,
             list(dataType='Sparse', error=FALSE, kernel='epan', verbose=FALSE))
 plot(res1)
-# Same as
-CreateDiagnosticsPlot(res1)
 }
 

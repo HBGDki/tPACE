@@ -1,7 +1,25 @@
 Current version
 =============
+New functionality:
+* Added obsOnly option to CreatePathPlot.
+
 Changes:
-`K` is used for specifying the number of components in functions such as SelectK, fitted, CreatePathPlot, CreateFuncBoxPlot, etc, instead of `k`.
+* "Diagnostic plots" are renamed.
+
+fdapace v0.2.5 (Release date: 14-Jul-2016)
+=============
+Changes:
+* `K` is used for specifying the number of components in functions such as SelectK, fitted, CreatePathPlot, CreateFuncBoxPlot, etc, instead of `k`.
+* GetCrCovYX is sped up.
+
+Minors:
+* Improved the legend placing in CreateDesignPlot.
+* Plot functions no longer show warnings.
+* Changed clustering example in vignettes.
+
+Minors:
+* Improved the legend placing in CreateDesignPlot.
+* Plot functions no longer show warnings.
 
 fdapace v0.2.0 (Release date: 17-Jun-2016)
 ==============
