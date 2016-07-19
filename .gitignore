@@ -72,3 +72,6 @@ vignettes/fdapaceVignetteKnitr.bbl
 
 # inst folder
 inst/doc
+
+# lintr
+.lintr_cache
