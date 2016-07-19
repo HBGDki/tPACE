@@ -1,11 +1,14 @@
 cache_directory: ".lintr_cache"
-linters: with_defaults(
+linters:
+  # Remove linters that equal NULL one at a time to not be overwhelmed
+  with_defaults(
     camel_case_linter = NULL, # 5091
     infix_spaces_linter = NULL, # 2825
     commas_linter = NULL, # 1759
     single_quotes_linter = NULL, # 1523
     assignment_linter = NULL, # 1410
     line_length_linter = NULL, # 1078
+    # line_length_linter(100), # when uncomment line above, replace with this
     spaces_left_parentheses_linter = NULL, # 534
     commented_code_linter = NULL, # 463
     trailing_whitespace_linter = NULL, # 241
@@ -18,4 +21,5 @@ linters: with_defaults(
   )
 exclusions:
   list(
+    "R/RcppExports.R"
   )
